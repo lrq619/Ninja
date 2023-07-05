@@ -1,0 +1,4 @@
+repository "NinjaUnity@diver999@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
