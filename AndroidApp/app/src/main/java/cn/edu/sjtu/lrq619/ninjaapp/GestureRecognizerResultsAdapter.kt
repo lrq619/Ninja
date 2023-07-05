@@ -9,6 +9,7 @@ import com.google.mediapipe.tasks.components.containers.Category
 //import cn.edu.sjtu.lrq619.tasks.components.containers.Category
 import java.util.Locale
 import kotlin.math.min
+import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
 
 class GestureRecognizerResultsAdapter :
     RecyclerView.Adapter<GestureRecognizerResultsAdapter.ViewHolder>() {
@@ -18,6 +19,7 @@ class GestureRecognizerResultsAdapter :
 
     private var adapterCategories: MutableList<Category?> = mutableListOf()
     private var adapterSize: Int = 0
+//    private var gestureStore: GestureStore = GestureStore()
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateResults(categories: List<Category>?) {
@@ -29,7 +31,10 @@ class GestureRecognizerResultsAdapter :
                 adapterCategories[i] = sortedCategories[i]
             }
             adapterCategories.sortedBy { it?.index() }
+
+
             notifyDataSetChanged()
+
         }
     }
 

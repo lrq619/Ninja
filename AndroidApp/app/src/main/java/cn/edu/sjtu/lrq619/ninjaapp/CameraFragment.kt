@@ -1,6 +1,7 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,9 @@ import java.util.concurrent.TimeUnit
 import cn.edu.sjtu.lrq619.ninjaapp.databinding.FragmentCameraBinding
 import androidx.camera.core.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
+import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.getGestures
+import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture_1
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +51,7 @@ class CameraFragment : Fragment(),
     }
 
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
+    private var _lastGesture: String? = null
 
     private val fragmentCameraBinding
         get() = _fragmentCameraBinding!!
@@ -365,6 +370,20 @@ class CameraFragment : Fragment(),
                     gestureRecognizerResultAdapter.updateResults(
                         gestureCategories.first()
                     )
+
+                    val highestCategory = gestureCategories.first()[0]
+                    val gesturetype = highestCategory?.categoryName()
+                    val username = "test"
+                    val gesture = Gesture(gesturetype, username)
+
+                    if(_lastGesture != gesturetype){
+                        Log.e(TAG, "Going to post gesture: "+gesturetype)
+                        postGesture(requireActivity().applicationContext,gesture)
+                        Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
+                        _lastGesture = gesturetype
+                    }
+
+
                 } else {
                     gestureRecognizerResultAdapter.updateResults(emptyList())
                 }
