@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
 import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.getGestures
 import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture_1
+import com.unity3d.player.UnityPlayer
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -381,6 +382,9 @@ class CameraFragment : Fragment(),
                         postGesture(requireActivity().applicationContext,gesture)
                         Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
                         _lastGesture = gesturetype
+
+                        // Lechen: Pass Gesture to Unity
+                        UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", gesturetype)
                     }
 
 
