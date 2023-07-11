@@ -46,4 +46,5 @@
     <string name="joinRoom_hint">"Enter Room ID"</string>
     <string name="joinRoom_join">"Join"</string>
     <string name="joinRoom_return">"Return to main page"</string>
+    <string name="server_ip">"47.98.59.37"</string>
 </resources>

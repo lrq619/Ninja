@@ -1,22 +1,17 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.app.Application
 import android.content.Context
+import android.content.res.Resources
+import android.provider.Settings.Global.getString
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley.newRequestQueue
-import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.URL
-import java.security.cert.CertificateFactory
-import javax.net.ssl.HttpsURLConnection
 import kotlin.reflect.full.declaredMemberProperties
+
 
 
 object GestureStore {
@@ -25,7 +20,7 @@ object GestureStore {
     private val nFields = Gesture::class.declaredMemberProperties.size
 
     private lateinit var queue: RequestQueue
-    private const val serverUrl = "https://47.98.59.37/"
+    private val httpUrl = "https://47.98.59.37/"
 
     fun postGesture(context: Context, gesture: Gesture) {
         TrustAllCertificates.apply()
@@ -35,7 +30,7 @@ object GestureStore {
             "username" to gesture.username
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            serverUrl+"postgestures/", JSONObject(jsonObj),
+            httpUrl+"postgestures/", JSONObject(jsonObj),
             { Log.d("postgestures", "gesture posted!") },
             { error -> Log.e("postGesture", error.localizedMessage ?: "JsonObjectRequest error") }
         )
@@ -55,7 +50,7 @@ object GestureStore {
             "username" to user.username
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            serverUrl+"postUser/", JSONObject(jsonObj),
+            httpUrl+"postUser/", JSONObject(jsonObj),
              {response ->
                 Log.e("listener","Sign in successful")
                 Success(user.username)
@@ -79,13 +74,13 @@ object GestureStore {
             "username" to user.username
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            serverUrl+"checkUserValid/", JSONObject(jsonObj),
+            httpUrl+"checkUserValid/", JSONObject(jsonObj),
             { response ->
                 Log.d("LoginUser", "User logged in!")
                 Success(user.username)
             },
             { error ->
-                Log.e("LoginUser", "Log in error")
+                Log.e("LoginUser", "Log in error, error code: "+error.networkResponse.statusCode)
                 Failed()
             }
         )
@@ -96,16 +91,17 @@ object GestureStore {
         queue.add(postRequest)
     }
 
-    fun createRoom(context: Context, user: User, Success:(Int?)->Unit, Failed:()->Unit) {
+    fun createRoom(context: Context, user: User, Success:(Int?,Int?)->Unit, Failed:()->Unit) {
         TrustAllCertificates.apply()
         val jsonObj = mapOf(
             "username" to user.username
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            serverUrl+"createRoom/", JSONObject(jsonObj),
+            httpUrl+"createRoom/", JSONObject(jsonObj),
             { response ->
                 Log.d("create room", "Room Created!")
-                Success(response.getInt("room_id"))
+                Success(response.getInt("room_id"), response.getInt("port"))
+
             },
             { error ->
                 Log.e("create room", "Create Room Failed!")
@@ -125,7 +121,7 @@ object GestureStore {
             "room_id" to id
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            serverUrl+"joinRoom/", JSONObject(jsonObj),
+            httpUrl+"joinRoom/", JSONObject(jsonObj),
             { response ->
                 Log.d("join room", "Room joined!")
                 Success()
@@ -135,6 +131,7 @@ object GestureStore {
                 Failed()
             }
         )
+
         if (!this::queue.isInitialized) {
             queue = newRequestQueue(context)
         }
