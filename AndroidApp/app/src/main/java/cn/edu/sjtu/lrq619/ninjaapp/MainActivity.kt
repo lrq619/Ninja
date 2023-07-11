@@ -19,6 +19,7 @@ import android.view.TextureView
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.createRoom
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        get_permission()
         Data = application as DataStore
         usernameText = findViewById(R.id.MainUsernameText)
     }
@@ -42,6 +43,23 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             usernameText.text = getString(R.string.welcome_user_not_logged_in)
+        }
+    }
+
+    fun get_permission(){
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+            get_permission()
         }
     }
 
