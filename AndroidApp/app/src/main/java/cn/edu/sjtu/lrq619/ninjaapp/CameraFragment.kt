@@ -29,8 +29,6 @@ import cn.edu.sjtu.lrq619.ninjaapp.databinding.FragmentCameraBinding
 import androidx.camera.core.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.getGestures
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture_1
 import com.unity3d.player.UnityPlayer
 
 

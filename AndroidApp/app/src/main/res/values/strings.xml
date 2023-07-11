@@ -37,4 +37,13 @@
         <item>CPU</item>
         <item>GPU</item>
     </string-array>
+    <string name="welcome_user_logged_in">"Welcome, %1$s!"</string>
+    <string name="welcome_user_not_logged_in">"Please log in."</string>
+    <string name="createRoom_Tips">"Room ID:"</string>
+    <string name="createRoom_roomID">"Room ID: %1$d"</string>
+    <string name="createRoom_wait">"Please wait…"</string>
+    <string name="createRoom_return">"Return to main page"</string>
+    <string name="joinRoom_hint">"Enter Room ID"</string>
+    <string name="joinRoom_join">"Join"</string>
+    <string name="joinRoom_return">"Return to main page"</string>
 </resources>

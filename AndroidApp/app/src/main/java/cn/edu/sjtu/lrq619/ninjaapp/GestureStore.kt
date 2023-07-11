@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley.newRequestQueue
 import org.json.JSONArray
@@ -44,74 +45,99 @@ object GestureStore {
             queue = newRequestQueue(context)
         }
         queue.add(postRequest)
+
     }
 
-    fun getGestures(context: Context) {
-        val getRequest = JsonObjectRequest(serverUrl+"getchatts/",
-            { response ->
-                _gestures.clear()
-                val chattsReceived = try { response.getJSONArray("gestures") } catch (e: JSONException) { JSONArray() }
-                for (i in 0 until chattsReceived.length()) {
-                    val chattEntry = chattsReceived[i] as JSONArray
-                    if (chattEntry.length() == nFields) {
-                        _gestures.add(Gesture(gesturetype = chattEntry[0].toString(),
-                            username = chattEntry[1].toString(),
-                            timestamp = chattEntry[2].toString())
-                        )
-                        Log.e("getGestures","Get gesture success! gesturetype: "+ chattEntry[0].toString())
-                    } else {
-                        Log.e("getGestures", "Received unexpected number of fields: " + chattEntry.length().toString() + " instead of " + nFields.toString())
-                    }
-                }
+    fun RegisterUser(context: Context, user: User, Success:(String?)->Unit, Failed:()->Unit){
+        TrustAllCertificates.apply()
 
-            }, {  }
+        val jsonObj = mapOf(
+            "username" to user.username
+        )
+        val postRequest = JsonObjectRequest(Request.Method.POST,
+            serverUrl+"postUser/", JSONObject(jsonObj),
+             {response ->
+                Log.e("listener","Sign in successful")
+                Success(user.username)
+            },
+            {error ->
+                val statusCode = error.networkResponse?.statusCode
+                Log.e("err listener", "Status Code "+statusCode.toString())
+                Failed()
+            }
+            )
+
+        if (!this::queue.isInitialized) {
+            queue = newRequestQueue(context)
+        }
+        queue.add(postRequest)
+    }
+
+    fun loginUser(context: Context, user: User, Success:(String?)->Unit, Failed:()->Unit) {
+        TrustAllCertificates.apply()
+        val jsonObj = mapOf(
+            "username" to user.username
+        )
+        val postRequest = JsonObjectRequest(Request.Method.POST,
+            serverUrl+"checkUserValid/", JSONObject(jsonObj),
+            { response ->
+                Log.d("LoginUser", "User logged in!")
+                Success(user.username)
+            },
+            { error ->
+                Log.e("LoginUser", "Log in error")
+                Failed()
+            }
         )
 
         if (!this::queue.isInitialized) {
             queue = newRequestQueue(context)
         }
-        queue.add(getRequest)
+        queue.add(postRequest)
     }
 
-    fun postGesture_1(gesture: Gesture) {
-//        val cf = CertificateFactory.getInstance("X.509")
-
-//        val caInput: InputStream = getAssets().open("load_der.crt")
-
-        Log.e("postGesture_1","Going to post")
-        val url = URL(serverUrl+"postgestures/")
-        val con : HttpsURLConnection = url.openConnection() as HttpsURLConnection
-
-        Log.e("postGesture_1","Finish connection")
-        con.requestMethod = "POST"
-        con.setRequestProperty("Content-Type", "application/json")
-        con.setRequestProperty("Accept", "application/json")
-        con.setDoOutput(true)
-
-        con.connect()
-
+    fun createRoom(context: Context, user: User, Success:(Int?)->Unit, Failed:()->Unit) {
+        TrustAllCertificates.apply()
         val jsonObj = mapOf(
-            "gesturetype" to gesture.gesturetype,
-            "username" to gesture.username
+            "username" to user.username
         )
-        val jsonInputString : String = jsonObj.toString()
-        Log.e("postGesture_1","Going to enter outputstream")
-        con.outputStream.use { os ->
-            val input: ByteArray = jsonInputString.toByteArray(Charsets.UTF_8)
-            Log.e("postGesture_1","Going to write to output buffer")
-            os.write(input, 0, input.size)
-        }
-        Log.e("postGesture_1","Finish writing to output buffer")
-
-        BufferedReader(
-            InputStreamReader(con.inputStream, "utf-8")
-        ).use { br ->
-            val response = StringBuilder()
-            var responseLine: String? = null
-            while (br.readLine().also { responseLine = it } != null) {
-                response.append(responseLine!!.trim { it <= ' ' })
+        val postRequest = JsonObjectRequest(Request.Method.POST,
+            serverUrl+"createRoom/", JSONObject(jsonObj),
+            { response ->
+                Log.d("create room", "Room Created!")
+                Success(response.getInt("room_id"))
+            },
+            { error ->
+                Log.e("create room", "Create Room Failed!")
+                Failed()
             }
-            println(response.toString())
+        )
+        if (!this::queue.isInitialized) {
+            queue = newRequestQueue(context)
         }
+        queue.add(postRequest)
+    }
+
+    fun joinRoom(context: Context, user: User, id: Int, Success:()->Unit, Failed:()->Unit) {
+        TrustAllCertificates.apply()
+        val jsonObj = mapOf(
+            "username" to user.username,
+            "room_id" to id
+        )
+        val postRequest = JsonObjectRequest(Request.Method.POST,
+            serverUrl+"joinRoom/", JSONObject(jsonObj),
+            { response ->
+                Log.d("join room", "Room joined!")
+                Success()
+            },
+            { error ->
+                Log.e("join room", "Join Room Failed!")
+                Failed()
+            }
+        )
+        if (!this::queue.isInitialized) {
+            queue = newRequestQueue(context)
+        }
+        queue.add(postRequest)
     }
 }
