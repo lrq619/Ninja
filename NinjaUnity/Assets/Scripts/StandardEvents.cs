@@ -14,5 +14,17 @@ namespace StandardEvents
         }
     }
 
-    
+    public class HPFromAndroidEvent
+    {
+        public float player_0_HP;
+        public float player_1_HP;
+
+        public HPFromAndroidEvent(float player_0_HP, float player_1_HP)
+        {
+            this.player_0_HP = player_0_HP;
+            this.player_1_HP = player_1_HP;
+        }
+    }
+
+
 }
