@@ -9,7 +9,6 @@ import com.google.mediapipe.tasks.components.containers.Category
 //import cn.edu.sjtu.lrq619.tasks.components.containers.Category
 import java.util.Locale
 import kotlin.math.min
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
 
 class GestureRecognizerResultsAdapter :
     RecyclerView.Adapter<GestureRecognizerResultsAdapter.ViewHolder>() {

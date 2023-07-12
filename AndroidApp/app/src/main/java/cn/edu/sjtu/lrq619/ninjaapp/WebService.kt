@@ -1,26 +1,25 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
-import android.app.Application
 import android.content.Context
-import android.content.res.Resources
-import android.provider.Settings.Global.getString
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley.newRequestQueue
 import org.json.JSONObject
+import java.net.URI
 import kotlin.reflect.full.declaredMemberProperties
 
 
-
-object GestureStore {
+object WebService {
     private val _gestures = arrayListOf<Gesture>()
     val gestures: List<Gesture> = _gestures
     private val nFields = Gesture::class.declaredMemberProperties.size
 
     private lateinit var queue: RequestQueue
     private val httpUrl = "https://47.98.59.37/"
+    private val wsUrl = "ws://47.98.59.37:8765"
+    val wsClient = WSClient(URI(wsUrl))
 
     fun postGesture(context: Context, gesture: Gesture) {
         TrustAllCertificates.apply()
@@ -91,50 +90,62 @@ object GestureStore {
         queue.add(postRequest)
     }
 
-    fun createRoom(context: Context, user: User, Success:(Int?,Int?)->Unit, Failed:()->Unit) {
-        TrustAllCertificates.apply()
-        val jsonObj = mapOf(
-            "username" to user.username
-        )
-        val postRequest = JsonObjectRequest(Request.Method.POST,
-            httpUrl+"createRoom/", JSONObject(jsonObj),
-            { response ->
-                Log.d("create room", "Room Created!")
-                Success(response.getInt("room_id"), response.getInt("port"))
-
-            },
-            { error ->
-                Log.e("create room", "Create Room Failed!")
-                Failed()
-            }
-        )
-        if (!this::queue.isInitialized) {
-            queue = newRequestQueue(context)
+    fun connectWebSocket(){
+        if(wsClient.isOpen) return
+        wsClient.connect()
+        while (!wsClient.isOpen) {
+            Thread.sleep(100)
         }
-        queue.add(postRequest)
     }
 
-    fun joinRoom(context: Context, user: User, id: Int, Success:()->Unit, Failed:()->Unit) {
+    fun createRoom(user: User, create_handler:(JSONObject,Int)->Unit, ready_handler:(JSONObject,Int)->Unit) {
         TrustAllCertificates.apply()
-        val jsonObj = mapOf(
-            "username" to user.username,
-            "room_id" to id
-        )
-        val postRequest = JsonObjectRequest(Request.Method.POST,
-            httpUrl+"joinRoom/", JSONObject(jsonObj),
-            { response ->
-                Log.d("join room", "Room joined!")
-                Success()
-            },
-            { error ->
-                Log.e("join room", "Join Room Failed!")
-                Failed()
-            }
-        )
 
-        if (!this::queue.isInitialized) {
-            queue = newRequestQueue(context)
-        }
-        queue.add(postRequest)
+
+        val wsRequest = JSONObject()
+        wsRequest.put("username", user.username)
+        wsRequest.put("action", "create_room")
+        wsRequest.put("args", JSONObject())
+
+        connectWebSocket()
+        wsClient.addResponseHandler("create_room",create_handler)
+        wsClient.addResponseHandler("ready", ready_handler)
+        wsClient.send(wsRequest.toString())
+    }
+
+    fun joinRoom(user: User, id: Int, join_handler:(JSONObject,Int)->Unit, ready_handler:(JSONObject,Int)->Unit) {
+        TrustAllCertificates.apply()
+        val wsRequest = JSONObject()
+        wsRequest.put("username", user.username)
+        wsRequest.put("action", "join_room")
+        val message_args = JSONObject()
+        message_args.put("room_id", id)
+        wsRequest.put("args", message_args)
+
+        connectWebSocket()
+        wsClient.addResponseHandler("join_room",join_handler)
+        wsClient.addResponseHandler("ready",ready_handler)
+        wsClient.send(wsRequest.toString())
+
+//        val jsonObj = mapOf(
+//            "username" to user.username,
+//            "room_id" to id
+//        )
+//        val postRequest = JsonObjectRequest(Request.Method.POST,
+//            httpUrl+"joinRoom/", JSONObject(jsonObj),
+//            { response ->
+//                Log.d("join room", "Room joined!")
+//                Success(id)
+//            },
+//            { error ->
+//                Log.e("join room", "Join Room Failed!")
+//                Failed()
+//            }
+//        )
+//
+//        if (!this::queue.isInitialized) {
+//            queue = newRequestQueue(context)
+//        }
+//        queue.add(postRequest)
     }
 }

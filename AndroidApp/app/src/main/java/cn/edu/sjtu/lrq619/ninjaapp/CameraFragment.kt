@@ -1,7 +1,6 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit
 import cn.edu.sjtu.lrq619.ninjaapp.databinding.FragmentCameraBinding
 import androidx.camera.core.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.postGesture
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.postGesture
 import com.unity3d.player.UnityPlayer
 
 
