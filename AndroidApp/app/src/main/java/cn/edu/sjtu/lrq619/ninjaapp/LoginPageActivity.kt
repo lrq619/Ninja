@@ -1,14 +1,12 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import androidx.core.content.ContextCompat.startActivity
 
 class LoginPageActivity : AppCompatActivity() {
     private lateinit var usernameInput: EditText
@@ -26,7 +24,7 @@ class LoginPageActivity : AppCompatActivity() {
     fun onClickConfirmLogIn(view: View) {
         val user = User(username = usernameInput.text.toString())
 
-        GestureStore.loginUser(
+        WebService.loginUser(
             context = applicationContext,
             user = user,
             Success = ::logInSuccessful,
@@ -42,7 +40,7 @@ class LoginPageActivity : AppCompatActivity() {
 
         Data.logIn()
         Data.setUsername(username)
-
+        Data.remainLogin()
         startActivity(Intent(this,MainActivity::class.java))
     }
 

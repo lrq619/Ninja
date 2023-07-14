@@ -3,11 +3,13 @@ package cn.edu.sjtu.lrq619.ninjaapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
-import org.w3c.dom.Text
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.joinRoom
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.joinRoom
+//import cn.edu.sjtu.lrq619.ninjaapp.MainActivity.Companion.wsClient
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
+import org.json.JSONObject
 
 class JoinRoomActivity : AppCompatActivity() {
     private lateinit var usernameInput: EditText
@@ -29,11 +31,10 @@ class JoinRoomActivity : AppCompatActivity() {
         }
         else {
             joinRoom(
-                context = applicationContext,
                 user = user,
                 id = usernameInput.text.toString().toInt(),
-                Success = ::joinRoomSuccessful,
-                Failed = ::joinRoomFailed
+                join_handler = ::onJoinRoom,
+                ready_handler = ::onReady
             )
         }
     }
@@ -42,13 +43,24 @@ class JoinRoomActivity : AppCompatActivity() {
         startActivity(Intent(applicationContext,MainActivity::class.java))
     }
 
-    private fun joinRoomSuccessful() {
-        toast("Room joined successful!")
-        startActivity(Intent(applicationContext,GameActivity::class.java))
+    private fun onJoinRoom(source:String, responseArgs:JSONObject, code: Int){
+        if(code == 0){
+            Log.e("onJoinRoom", "Join room success!")
+//            val room_id = responseArgs["room_id"]
+
+        }else{
+            Log.e("onJoinRoom","Join room failed!")
+        }
     }
 
-    private fun joinRoomFailed() {
-        toast("Join room failed!")
+    private fun onReady(source:String, responseArgs:JSONObject, code: Int) {
+        if(code == 0){
+            val owner = responseArgs["owner"]
+            val guest = responseArgs["guest"]
+            Log.e("onReadyOwner","Guest ready! owner: "+owner)
+            startActivity(Intent(this,GameActivity::class.java))
+        }
     }
+
 
 }

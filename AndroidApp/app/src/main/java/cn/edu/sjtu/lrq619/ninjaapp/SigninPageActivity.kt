@@ -1,10 +1,8 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 
@@ -23,7 +21,7 @@ class SigninPageActivity : AppCompatActivity() {
     fun onClickConfirmSignIn(view: View) {
         val user = User(username = usernameInput.text.toString())
 
-        GestureStore.RegisterUser(
+        WebService.RegisterUser(
             context = applicationContext,
             user = user,
             Success = ::signInSuccessful,
@@ -39,6 +37,7 @@ class SigninPageActivity : AppCompatActivity() {
 
         Data.logIn()
         Data.setUsername(username)
+        Data.remainLogin()
 
         startActivity(Intent(this,MainActivity::class.java))
     }

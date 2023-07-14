@@ -2,6 +2,7 @@ package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.app.Application
 import android.graphics.Typeface
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import kotlin.properties.Delegates
 
@@ -27,6 +28,16 @@ class DataStore : Application () {
 
     fun logIn() {
         _isLoggedIn = true
+    }
+
+    fun remainLogin(){
+        if(!_isLoggedIn) return
+        val sharedPreferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("username", _username)
+
+        editor.apply()
+//        editor.commit()
     }
 
     fun logOut() {
