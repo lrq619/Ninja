@@ -37,6 +37,7 @@ class SigninPageActivity : AppCompatActivity() {
 
         Data.logIn()
         Data.setUsername(username)
+        Data.remainLogin()
 
         startActivity(Intent(this,MainActivity::class.java))
     }

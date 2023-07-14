@@ -1,29 +1,35 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.app.Activity
+import android.app.Application.ActivityLifecycleCallbacks
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import cn.edu.sjtu.lrq619.ninjaapp.WebService.connectWebSocket
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.createRoom
 import org.json.JSONObject
-import java.net.URI
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var usernameText: TextView
-    lateinit var Data : DataStore
 
-//    companion object{
-//        private val wsUrl = "ws://47.98.59.37:8765"
-//        val wsClient = WSClient(URI(wsUrl))
-//    }
 
+    companion object{
+        lateinit var Data : DataStore
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         get_permission()
         Data = application as DataStore
@@ -32,7 +38,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
+        val sharedPreferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "")
+        Log.e("saved username","saved username is "+username)
+        if(username != ""){
+            Data.logIn()
+            Data.setUsername(username)
+        }
         if (Data.isLoggedIn()){
             usernameText.text = getString(R.string.welcome_user_logged_in,Data.username())
         }
@@ -40,6 +52,26 @@ class MainActivity : AppCompatActivity() {
             usernameText.text = getString(R.string.welcome_user_not_logged_in)
         }
     }
+
+//    override fun onDestroy(){
+//
+//        Log.e("Destory","Main activity destroyed!")
+//
+//        if(Data.isLoggedIn()){
+//            Log.e("Destory","Going to logout")
+//            val user = User(username = Data.username())
+//            WebService.logoutUser(
+//                context = applicationContext,
+//                Success = ::onLogoutSuccess,
+//                Failed = ::onLogoutFail,
+//                user = user
+//            )
+//        }
+//        if(false){
+//            super.onDestroy()
+//        }
+//
+//    }
 
     fun get_permission(){
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -84,8 +116,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
+    private fun onLogoutSuccess(username:String?){
+        Log.e("Logout Success",username+" log out success!")
+//        super.onDestroy()
+    }
 
-    private fun onCreateRoom(responseArgs:JSONObject, code: Int) {
+    private fun onLogoutFail(username: String?){
+        Log.e("Logout Fail", username+" log out failed!")
+    }
+
+    private fun onCreateRoom(source:String, responseArgs:JSONObject, code: Int) {
 //        toast("Room successfully created!")
         if(code == 0){
             Log.e("onCreateRoom", "Success in create room!")
@@ -97,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onReady(responseArgs:JSONObject, code: Int) {
+    private fun onReady(source:String, responseArgs:JSONObject, code: Int) {
         if(code == 0){
             val owner = responseArgs["owner"]
             val guest = responseArgs["guest"]

@@ -21,26 +21,7 @@ object WebService {
     private val wsUrl = "ws://47.98.59.37:8765"
     val wsClient = WSClient(URI(wsUrl))
 
-    fun postGesture(context: Context, gesture: Gesture) {
-        TrustAllCertificates.apply()
-        Log.e("Trust","Trusted all certificates!")
-        val jsonObj = mapOf(
-            "gesturetype" to gesture.gesturetype,
-            "username" to gesture.username
-        )
-        val postRequest = JsonObjectRequest(Request.Method.POST,
-            httpUrl+"postgestures/", JSONObject(jsonObj),
-            { Log.d("postgestures", "gesture posted!") },
-            { error -> Log.e("postGesture", error.localizedMessage ?: "JsonObjectRequest error") }
-        )
 
-        if (!this::queue.isInitialized) {
-            Log.e("init","queue get initialized!")
-            queue = newRequestQueue(context)
-        }
-        queue.add(postRequest)
-
-    }
 
     fun RegisterUser(context: Context, user: User, Success:(String?)->Unit, Failed:()->Unit){
         TrustAllCertificates.apply()
@@ -73,7 +54,7 @@ object WebService {
             "username" to user.username
         )
         val postRequest = JsonObjectRequest(Request.Method.POST,
-            httpUrl+"checkUserValid/", JSONObject(jsonObj),
+            httpUrl+"loginUser/", JSONObject(jsonObj),
             { response ->
                 Log.d("LoginUser", "User logged in!")
                 Success(user.username)
@@ -81,6 +62,29 @@ object WebService {
             { error ->
                 Log.e("LoginUser", "Log in error, error code: "+error.networkResponse.statusCode)
                 Failed()
+            }
+        )
+
+        if (!this::queue.isInitialized) {
+            queue = newRequestQueue(context)
+        }
+        queue.add(postRequest)
+    }
+
+    fun logoutUser(context: Context, user: User, Success:(String?)->Unit, Failed:(String?)->Unit) {
+        TrustAllCertificates.apply()
+        val jsonObj = mapOf(
+            "username" to user.username
+        )
+        val postRequest = JsonObjectRequest(Request.Method.POST,
+            httpUrl+"logoutUser/", JSONObject(jsonObj),
+            { response ->
+                Log.d("LogoutUser", "User logged out!")
+                Success(user.username)
+            },
+            { error ->
+                Log.e("LogoutUser", "Log out error, error code: "+error.networkResponse.statusCode)
+                Failed(user.username)
             }
         )
 
@@ -98,7 +102,9 @@ object WebService {
         }
     }
 
-    fun createRoom(user: User, create_handler:(JSONObject,Int)->Unit, ready_handler:(JSONObject,Int)->Unit) {
+
+
+    fun createRoom(user: User, create_handler:(String, JSONObject,Int)->Unit, ready_handler:(String, JSONObject,Int)->Unit) {
         TrustAllCertificates.apply()
 
 
@@ -113,7 +119,7 @@ object WebService {
         wsClient.send(wsRequest.toString())
     }
 
-    fun joinRoom(user: User, id: Int, join_handler:(JSONObject,Int)->Unit, ready_handler:(JSONObject,Int)->Unit) {
+    fun joinRoom(user: User, id: Int, join_handler:(String, JSONObject,Int)->Unit, ready_handler:(String,JSONObject,Int)->Unit) {
         TrustAllCertificates.apply()
         val wsRequest = JSONObject()
         wsRequest.put("username", user.username)
@@ -126,26 +132,19 @@ object WebService {
         wsClient.addResponseHandler("join_room",join_handler)
         wsClient.addResponseHandler("ready",ready_handler)
         wsClient.send(wsRequest.toString())
+    }
 
-//        val jsonObj = mapOf(
-//            "username" to user.username,
-//            "room_id" to id
-//        )
-//        val postRequest = JsonObjectRequest(Request.Method.POST,
-//            httpUrl+"joinRoom/", JSONObject(jsonObj),
-//            { response ->
-//                Log.d("join room", "Room joined!")
-//                Success(id)
-//            },
-//            { error ->
-//                Log.e("join room", "Join Room Failed!")
-//                Failed()
-//            }
-//        )
-//
-//        if (!this::queue.isInitialized) {
-//            queue = newRequestQueue(context)
-//        }
-//        queue.add(postRequest)
+    fun postGesture(gesture: Gesture, handler:(String, JSONObject,Int)->Unit) {
+        TrustAllCertificates.apply()
+        val wsRequest = JSONObject()
+        wsRequest.put("username",gesture.username)
+        wsRequest.put("action","post_gesture")
+        val message_args = JSONObject()
+        message_args.put("gesture_type", gesture.gesturetype)
+        wsRequest.put("args",message_args)
+        connectWebSocket()
+//        wsClient.addResponseHandler("post_gesture",handler)
+        wsClient.send(wsRequest.toString())
+
     }
 }

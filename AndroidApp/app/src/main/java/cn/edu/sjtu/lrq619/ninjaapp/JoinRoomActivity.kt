@@ -43,7 +43,7 @@ class JoinRoomActivity : AppCompatActivity() {
         startActivity(Intent(applicationContext,MainActivity::class.java))
     }
 
-    private fun onJoinRoom(responseArgs:JSONObject, code: Int){
+    private fun onJoinRoom(source:String, responseArgs:JSONObject, code: Int){
         if(code == 0){
             Log.e("onJoinRoom", "Join room success!")
 //            val room_id = responseArgs["room_id"]
@@ -53,7 +53,7 @@ class JoinRoomActivity : AppCompatActivity() {
         }
     }
 
-    private fun onReady(responseArgs:JSONObject, code: Int) {
+    private fun onReady(source:String, responseArgs:JSONObject, code: Int) {
         if(code == 0){
             val owner = responseArgs["owner"]
             val guest = responseArgs["guest"]
@@ -62,25 +62,5 @@ class JoinRoomActivity : AppCompatActivity() {
         }
     }
 
-    private fun joinRoomSuccessful(id: Int) {
-        toast("Room joined successful!")
-        val user: User = User(username = Data.username())
-        val jsonObj = JSONObject()
-        jsonObj.put("username",user.username)
-        jsonObj.put("action","join_room")
-        val args = JSONObject()
-        args.put("room_id",id)
-        jsonObj.put("args",args)
-        wsClient.connect()
-        while(!wsClient.isOpen){
-            Thread.sleep(100)
-        }
-        wsClient.send(jsonObj.toString())
-//        startActivity(Intent(applicationContext,GameActivity::class.java))
-    }
-
-    private fun joinRoomFailed() {
-        toast("Join room failed!")
-    }
 
 }

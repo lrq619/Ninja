@@ -1,8 +1,10 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 
@@ -38,7 +40,7 @@ class LoginPageActivity : AppCompatActivity() {
 
         Data.logIn()
         Data.setUsername(username)
-
+        Data.remainLogin()
         startActivity(Intent(this,MainActivity::class.java))
     }
 

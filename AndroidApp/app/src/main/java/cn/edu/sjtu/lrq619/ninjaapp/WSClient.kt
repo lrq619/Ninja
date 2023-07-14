@@ -13,9 +13,9 @@ class WSClient(uri: URI) : WebSocketClient(uri) {
     private fun onJoinRoom(responseArgs:JSONObject, code:Int){
 
     }
-    private val respnseHandlerDict : MutableMap<String, (JSONObject, Int)->Unit> = mutableMapOf()
+    private val respnseHandlerDict : MutableMap<String, (String, JSONObject, Int)->Unit> = mutableMapOf()
 
-    fun addResponseHandler(action:String, handler:(JSONObject, Int)->Unit){
+    fun addResponseHandler(action:String, handler:(String, JSONObject, Int)->Unit){
         respnseHandlerDict.put(action, handler)
     }
     override fun onOpen(handshakedata: ServerHandshake?) {
@@ -39,12 +39,15 @@ class WSClient(uri: URI) : WebSocketClient(uri) {
 
     private fun parseResponse(response: String){
         val json_obj = JSONObject(response)
+        val source = json_obj["source"]
         val code = json_obj["code"]
         val action = json_obj["action"]
         val handler = respnseHandlerDict[action]
         val response_args : JSONObject = json_obj["args"] as JSONObject
         if (handler != null) {
-            handler(response_args, code as Int)
+            handler(source as String, response_args, code as Int)
+        }else{
+            Log.e("parseResponse","Don't have handler for action: "+action)
         }
 
     }

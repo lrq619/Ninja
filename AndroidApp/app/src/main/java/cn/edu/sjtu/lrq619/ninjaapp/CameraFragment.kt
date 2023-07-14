@@ -28,7 +28,9 @@ import cn.edu.sjtu.lrq619.ninjaapp.databinding.FragmentCameraBinding
 import androidx.camera.core.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.postGesture
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
+import org.json.JSONObject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -121,7 +123,8 @@ class CameraFragment : Fragment(),
     ): View {
         _fragmentCameraBinding =
             FragmentCameraBinding.inflate(inflater, container, false)
-
+        wsClient.addResponseHandler("post_gesture",::onGestureReceived)
+        Log.e("OnCreateView","gesture callback bind!")
         return fragmentCameraBinding.root
     }
 
@@ -357,6 +360,23 @@ class CameraFragment : Fragment(),
     // image height/width to scale and place the landmarks properly through
     // OverlayView. Only one result is expected at a time. If two or more
     // hands are seen in the camera frame, only one will be processed.
+    private fun onGestureReceived(source:String, responseArgs: JSONObject, code:Int){
+        if(code == 0){
+            val gesture_type = responseArgs["gesture_type"]
+            UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid",
+                gesture_type as String?
+            )
+            var isMyself:String = ""
+            if(source == MainActivity.Data.username()){
+                isMyself = "my self"
+            }else{
+                isMyself = "another side"
+            }
+
+            Log.e("Gesture_Received","Received gesture from "+isMyself)
+        }
+
+    }
     override fun onResults(
         resultBundle: GestureRecognizerHelper.ResultBundle
     ) {
@@ -371,17 +391,17 @@ class CameraFragment : Fragment(),
 
                     val highestCategory = gestureCategories.first()[0]
                     val gesturetype = highestCategory?.categoryName()
-                    val username = "test"
+                    val username = MainActivity.Data.username()
                     val gesture = Gesture(gesturetype, username)
 
                     if(_lastGesture != gesturetype){
                         Log.e(TAG, "Going to post gesture: "+gesturetype)
-                        postGesture(requireActivity().applicationContext,gesture)
+                        postGesture(gesture,::onGestureReceived)
                         Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
                         _lastGesture = gesturetype
 
                         // Lechen: Pass Gesture to Unity
-                        UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", gesturetype)
+//                        UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", gesturetype)
                     }
 
 

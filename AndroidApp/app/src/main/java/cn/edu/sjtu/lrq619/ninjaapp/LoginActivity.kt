@@ -8,13 +8,13 @@ import android.view.View
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var sharedPreferences: SharedPreferences
+//    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+//        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
     }
 
     fun onClickSignIn(view: View) {
