@@ -1,6 +1,7 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.app.Application
+import android.graphics.Typeface
 import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import kotlin.properties.Delegates
 
@@ -9,9 +10,6 @@ class DataStore : Application () {
     private var _isLoggedIn : Boolean = false
     private var _username :String? = null
     private var _roomID : Int? = null
-    init {
-
-    }
 
     override fun onCreate() {
         super.onCreate()

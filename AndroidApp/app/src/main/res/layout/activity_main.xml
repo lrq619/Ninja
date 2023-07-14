@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
 
@@ -14,7 +15,10 @@
         android:layout_marginTop="300dp"
         android:onClick="onClickCreateRoom"
         android:text="Create Room"
-        android:textSize="24sp"
+        android:textSize="36sp"
+        android:textColor="@color/yellow"
+        android:fontFamily="@font/maru_monica"
+        android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,9 +29,12 @@
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="48dp"
+        android:fontFamily="@font/maru_monica"
         android:onClick="onClickJoinRoom"
         android:text="Join Room"
-        android:textSize="24sp"
+        android:textSize="36sp"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +44,10 @@
         android:id="@+id/MainUsernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/maru_monica"
         android:text="Please log in."
+        android:textSize="24sp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
