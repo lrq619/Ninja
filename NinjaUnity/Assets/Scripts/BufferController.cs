@@ -10,23 +10,12 @@ public class BufferController : MonoBehaviour
     void Start()
     {
         EventBus.Subscribe<StandardEvents.GestureFromAndroidEvent>(EnqueueGesture);
-        //StartCoroutine(debuger());
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    IEnumerator debuger()
-    {
-        for (int i = 0; i <= 5; i++)
-        {
-            EventBus.Publish(new StandardEvents.GestureFromAndroidEvent("Thumb_Up"));
-            yield return new WaitForSeconds(5f);
-        }
-
     }
 
     void EnqueueGesture(StandardEvents.GestureFromAndroidEvent e)
