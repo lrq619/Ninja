@@ -11,7 +11,6 @@ import android.graphics.Typeface
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +24,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import cn.edu.sjtu.lrq619.ninjaapp.GestureStore.createRoom
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -49,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         get_permission()
         Data = application as DataStore
         usernameText = findViewById(R.id.MainUsernameText)
+    }
+    fun get_permission(){
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
+        }
     }
 
     override fun onStart() {
