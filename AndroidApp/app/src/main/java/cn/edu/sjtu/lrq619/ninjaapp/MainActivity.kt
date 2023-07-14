@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.util.Log
 import android.os.Handler
 import android.os.HandlerThread
+import android.text.TextUtils.replace
 import android.util.TypedValue
 import android.view.Surface
 import android.view.TextureView
@@ -28,6 +29,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.createRoom
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.CreateRoomFragment
 import org.json.JSONObject
 
 
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object{
-        lateinit var Data : DataStore
+        var Data : DataStore = DataStore()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         get_permission()
-        Data = application as DataStore
+//        Data = application as DataStore
         usernameText = findViewById(R.id.MainUsernameText)
     }
     fun get_permission(){
@@ -109,10 +111,12 @@ class MainActivity : AppCompatActivity() {
     private fun onCreateRoom(source:String, responseArgs:JSONObject, code: Int) {
 //        toast("Room successfully created!")
         if(code == 0){
-            Log.e("onCreateRoom", "Success in create room!")
+            Log.e("onCreateRoomInFragment", "Success in create room!")
             val room_id = responseArgs["room_id"]
             Data.setRoomID(room_id as Int?)
-            startActivity(Intent(this,CreateRoomActivity::class.java))
+//            startActivity(Intent(this,CreateRoomActivity::class.java))
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.MainFragments, CreateRoomFragment(), null).commit()
         }else{
             Log.e("onCreateRoom","Fail in create room!")
         }

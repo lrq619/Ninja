@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
 
@@ -13,12 +13,13 @@
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="300dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/maru_monica"
         android:onClick="onClickCreateRoom"
         android:text="Create Room"
-        android:textSize="36sp"
         android:textColor="@color/yellow"
-        android:fontFamily="@font/maru_monica"
-        android:backgroundTint="@color/black"
+        android:textSize="36sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,12 +30,13 @@
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="48dp"
+        android:backgroundTint="@color/black"
         android:fontFamily="@font/maru_monica"
         android:onClick="onClickJoinRoom"
         android:text="Join Room"
-        android:textSize="36sp"
         android:textColor="@color/yellow"
-        android:backgroundTint="@color/black"
+        android:textSize="36sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,5 +52,16 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/MainFragments"
+        android:name="cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment"
+        android:layout_width="0dp"
+        android:layout_height="682dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MainUsernameText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
