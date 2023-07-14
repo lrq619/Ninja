@@ -6,11 +6,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.SurfaceTexture
+import android.graphics.Typeface
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.os.Handler
+import android.os.HandlerThread
+import android.util.TypedValue
+import android.view.Surface
+import android.view.TextureView
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -35,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         Data = application as DataStore
         usernameText = findViewById(R.id.MainUsernameText)
     }
+    fun get_permission(){
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
+        }
+    }
 
     override fun onStart() {
         super.onStart()
@@ -50,43 +68,6 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             usernameText.text = getString(R.string.welcome_user_not_logged_in)
-        }
-    }
-
-//    override fun onDestroy(){
-//
-//        Log.e("Destory","Main activity destroyed!")
-//
-//        if(Data.isLoggedIn()){
-//            Log.e("Destory","Going to logout")
-//            val user = User(username = Data.username())
-//            WebService.logoutUser(
-//                context = applicationContext,
-//                Success = ::onLogoutSuccess,
-//                Failed = ::onLogoutFail,
-//                user = user
-//            )
-//        }
-//        if(false){
-//            super.onDestroy()
-//        }
-//
-//    }
-
-    fun get_permission(){
-        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
-            get_permission()
         }
     }
 

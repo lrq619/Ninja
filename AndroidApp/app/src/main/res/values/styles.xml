@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PixelText" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/maru_monica</item>
+        <item name="color">#FFFF00</item>
+    </style>
+</resources>
