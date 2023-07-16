@@ -1,6 +1,8 @@
 package cn.edu.sjtu.lrq619.ninjaapp.fragments.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,9 @@ import cn.edu.sjtu.lrq619.ninjaapp.MainActivity
 import cn.edu.sjtu.lrq619.ninjaapp.R
 import cn.edu.sjtu.lrq619.ninjaapp.User
 import cn.edu.sjtu.lrq619.ninjaapp.WebService
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.RegisterUser
 import cn.edu.sjtu.lrq619.ninjaapp.toast
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,22 +25,17 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
+ * Use the [SigninFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class SigninFragment : Fragment() {
+
     private var Data : DataStore = MainActivity.Data
     private lateinit var usernameInput: TextView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -44,18 +43,18 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+//        Data = MainActivity.Data
+        val view = inflater.inflate(R.layout.fragment_signin, container, false)
+        usernameInput = view.findViewById(R.id.SignInUsernameInput)
 
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-        usernameInput = view.findViewById(R.id.loginUsernameInput)
-        val loginButton = view.findViewById<Button>(R.id.confirmLogInButton)
-        val returnButton = view.findViewById<Button>(R.id.LoginReturnButton)
-        loginButton.setOnClickListener {
-            onClickConfirmLogin()
+        val signinButton = view.findViewById<Button>(R.id.confirmSignInButton)
+        val returnButton = view.findViewById<Button>(R.id.signinReturnButton)
+        signinButton.setOnClickListener {
+            onClickConfirmSignin()
         }
         returnButton.setOnClickListener {
-            onClickLoginReturn()
+            onClickSigninReturn()
         }
-
         return view
     }
 
@@ -66,12 +65,12 @@ class LoginFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
+         * @return A new instance of fragment SigninFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
+            SigninFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -79,25 +78,26 @@ class LoginFragment : Fragment() {
             }
     }
 
-    private fun onClickConfirmLogin() {
+    private fun onClickConfirmSignin() {
         val user = User(username = usernameInput.text.toString())
 
         activity?.applicationContext?.let {
-            WebService.loginUser(
+            WebService.RegisterUser(
                 context = it,
                 user = user,
-                Success = ::logInSuccessful,
-                Failed = ::logInFailed)
+                Success = ::signInSuccessful,
+                Failed = ::signInFailed)
         }
+
     }
 
-    private fun onClickLoginReturn() {
+    private fun onClickSigninReturn() {
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.MainFragments, MainFragment(),null)?.commit()
     }
 
-    private fun logInSuccessful(username:String?) {
-        activity?.toast("Log in Successful!")
+    private fun signInSuccessful(username: String?) {
+        activity?.toast("Sign in Successful!")
 
         Data.logIn(username)
 
@@ -107,7 +107,9 @@ class LoginFragment : Fragment() {
             ?.replace(R.id.MainFragments, MainFragment(),null)?.commit()
     }
 
-    private fun logInFailed() {
-        activity?.toast("Log in Failed.")
+    private fun signInFailed() {
+        activity?.toast("Sign in Failed.")
     }
+
+
 }

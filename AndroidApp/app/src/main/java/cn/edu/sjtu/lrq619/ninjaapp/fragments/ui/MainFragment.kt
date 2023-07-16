@@ -1,25 +1,19 @@
 package cn.edu.sjtu.lrq619.ninjaapp.fragments.ui
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import cn.edu.sjtu.lrq619.ninjaapp.CreateRoomActivity
-import cn.edu.sjtu.lrq619.ninjaapp.DataStore
+import android.widget.Button
 import cn.edu.sjtu.lrq619.ninjaapp.GameActivity
-import cn.edu.sjtu.lrq619.ninjaapp.LoginActivity
 import cn.edu.sjtu.lrq619.ninjaapp.MainActivity
 import cn.edu.sjtu.lrq619.ninjaapp.R
 import cn.edu.sjtu.lrq619.ninjaapp.User
 import cn.edu.sjtu.lrq619.ninjaapp.WebService
 import org.json.JSONObject
-import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.CreateRoomFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,18 +26,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var usernameText: TextView
+
+    private lateinit var createRoomButton : Button
+    private lateinit var joinRoomButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
 
     }
 
@@ -58,17 +46,43 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        createRoomButton = view.findViewById(R.id.createRoomButton)
+        joinRoomButton = view.findViewById(R.id.joinRoomButton)
+
+        createRoomButton.setOnClickListener {
+            onClickCreateRoom()
+        }
+        joinRoomButton.setOnClickListener {
+            onClickJoinRoom()
+        }
+
+        return view
     }
-    fun onClickCreateRoom(view: View?){
+    private fun onClickCreateRoom(){
         val user = User(username = MainActivity.Data.username())
         // jump to LoginActivity if not logged in; CreateRoomActivity otherwise
 
         if (isLoggedIn()){
-            WebService.createRoom(user, ::onCreateRoom, ::onReady)
+            WebService.createRoom(user, ::onCreateRoom)
         }
         else {
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.MainFragments, LogSignInFragment(), null)?.commit()
+        }
+    }
+
+    private fun onClickJoinRoom() {
+        val user = User(username = MainActivity.Data.username())
+        // jump to LoginActivity if not logged in; CreateRoomActivity otherwise
+
+        if (isLoggedIn()){
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.MainFragments, JoinRoomFragment(), null)?.commit()
+        }
+        else {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.MainFragments, LogSignInFragment(), null)?.commit()
         }
     }
 
@@ -91,7 +105,15 @@ class MainFragment : Fragment() {
             val owner = responseArgs["owner"]
             val guest = responseArgs["guest"]
             Log.e("onReadyOwner","Owner received Guest ready! guest: "+guest)
-            startActivity(Intent(requireContext(), GameActivity::class.java))
+            if(requireActivity()== null){
+                Log.e("onReady","Activity is null")
+            }else{
+                Log.e("onReady","Activity is not null")
+            }
+
+            startActivity(Intent(requireActivity().applicationContext, GameActivity::class.java))
+
+
         }
     }
 

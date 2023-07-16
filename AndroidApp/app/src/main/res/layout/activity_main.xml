@@ -32,7 +32,6 @@
         android:layout_marginTop="48dp"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/maru_monica"
-        android:onClick="onClickJoinRoom"
         android:text="Join Room"
         android:textColor="@color/yellow"
         android:textSize="36sp"
@@ -53,6 +52,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="100dp"
+        android:layout_height="32dp"
+        android:text="Log out"
+        android:textSize = "16sp"
+        android:fontFamily="@font/maru_monica"
+        android:textColor="@color/white"
+        android:onClick="onClickLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/MainFragments"
         android:name="cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment"
@@ -63,5 +74,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MainUsernameText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

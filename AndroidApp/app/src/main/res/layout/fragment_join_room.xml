@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ui.LoginFragment">
+    tools:context=".fragments.ui.JoinRoomFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black">
 
         <Button
-            android:id="@+id/LoginReturnButton"
+            android:id="@+id/joinRoomReturnButton"
             android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginBottom="200dp"
             android:fontFamily="@font/maru_monica"
-            android:text="Back"
+            android:text="Return to main page"
             android:textSize="36sp"
             android:textColor="@color/yellow"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,32 +26,32 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/confirmLogInButton"
+            android:id="@+id/confirmJoinRoomButton"
             android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginBottom="60dp"
             android:fontFamily="@font/maru_monica"
-            android:text="Log In"
+            android:text="Join Room"
             android:textSize="36sp"
             android:textColor="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/LoginReturnButton"
+            app:layout_constraintBottom_toTopOf="@+id/joinRoomReturnButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/loginUsernameInput"
+            android:id="@+id/joinRoomIDInput"
             android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginBottom="50dp"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Username"
+            android:hint="Room ID:"
             android:inputType="textMultiLine"
             android:fontFamily="@font/maru_monica"
             android:textSize="36sp"
             android:textColor="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/confirmLogInButton"
+            app:layout_constraintBottom_toTopOf="@+id/confirmJoinRoomButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent" />
