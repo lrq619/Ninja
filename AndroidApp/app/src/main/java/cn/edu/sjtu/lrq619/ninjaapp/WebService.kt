@@ -71,7 +71,7 @@ object WebService {
         queue.add(postRequest)
     }
 
-    fun logoutUser(context: Context, user: User, Success:(String?)->Unit, Failed:(String?)->Unit) {
+    fun logoutUser(context: Context, user: User, Success:()->Unit, Failed:(String?,Int)->Unit) {
         TrustAllCertificates.apply()
         val jsonObj = mapOf(
             "username" to user.username
@@ -80,11 +80,11 @@ object WebService {
             httpUrl+"logoutUser/", JSONObject(jsonObj),
             { response ->
                 Log.d("LogoutUser", "User logged out!")
-                Success(user.username)
+                Success()
             },
             { error ->
                 Log.e("LogoutUser", "Log out error, error code: "+error.networkResponse.statusCode)
-                Failed(user.username)
+                Failed(user.username,error.networkResponse.statusCode)
             }
         )
 
@@ -104,7 +104,7 @@ object WebService {
 
 
 
-    fun createRoom(user: User, create_handler:(String, JSONObject,Int)->Unit, ready_handler:(String, JSONObject,Int)->Unit) {
+    fun createRoom(user: User, create_handler:(String, JSONObject,Int)->Unit) {
         TrustAllCertificates.apply()
 
 
@@ -115,7 +115,7 @@ object WebService {
 
         connectWebSocket()
         wsClient.addResponseHandler("create_room",create_handler)
-        wsClient.addResponseHandler("ready", ready_handler)
+//        wsClient.addResponseHandler("ready", ready_handler)
         wsClient.send(wsRequest.toString())
     }
 
