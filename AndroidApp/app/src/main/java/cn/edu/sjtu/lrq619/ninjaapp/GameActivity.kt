@@ -35,7 +35,7 @@ class GameActivity : AppCompatActivity() {
         Log.e("GameActivity","New websocket connected!")
         WebService.startPlay(username, room_id)
 
-
+        WebService.wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
         WebService.wsClient.addResponseHandler("quit_room",::onReceivedQuitRoom)
         Log.e("Game activity on create","handlers: "+WebService.wsClient.printAllHanlders())
     }
@@ -53,6 +53,15 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         Log.e("GameActivityDestory","Game Activity destoyed!")
         super.onDestroy()
+    }
+    fun onReceivedGameStart(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val username0 = responseArgs["username0"]
+        val username1 = responseArgs["username1"]
+        Log.e("Unity","Received GameStart, username0: "+username0+",username1: "+username1)
+//        val args = JSONObject()
+//        args.put("username0",username0)
+//        args.put("username1",username1)
+//        UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
     }
 
     private fun onReceivedQuitRoom(source:String, responseArgs: JSONObject, code: Int){

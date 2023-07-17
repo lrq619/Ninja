@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
+import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,8 +39,50 @@ class UnityFragment : Fragment() {
         mUnityPlayer!!.windowFocusChanged(true)
 //        mUnityPlayer!!.resume()
         Log.e("Unity fragment","On Create view for Unity fragment")
+
+        wsClient.addResponseHandler("AddGestureBuffer",::onReceivedAddGestureBuffer)
+        wsClient.addResponseHandler("ChangeHP",::onReceivedChangeHP)
+        wsClient.addResponseHandler("ReleaseSkill",::onReceivedReleaseSkill)
         return view
     }
+
+
+
+    fun onReceivedAddGestureBuffer(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val gesture_type = responseArgs["gesture_type"]
+        Log.e("Unity","Received AddGestureBuffer: "+gesture_type)
+//        UnityPlayer.UnitySendMessage("GameController","GestureFromAndroid", gesture_type as String?)
+        val args = JSONObject()
+        args.put("gesture",gesture_type)
+        Log.e("ReceiveBuffer",args.toString())
+//        UnityPlayer.UnitySendMessage("GameController","AddGestureBuffer", args.toString())
+    }
+
+    fun onReceivedChangeHP(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val value = responseArgs["value"]
+        Log.e("Unity","Received AddGestureBuffer: "+value)
+
+//        val args = JSONObject()
+//        args.put("value",value)
+//        args.put("username",source)
+//        UnityPlayer.UnitySendMessage("GameController","ChangeHP", args.toString())
+    }
+
+    fun onReceivedReleaseSkill(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val skill = responseArgs["skill"]
+        Log.e("Unity","Player: "+source+" released skill "+skill)
+        if(skill == "LIGHT_ATTACK") {
+            UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", "ILoveYou")
+        }
+
+        val args = JSONObject()
+        args.put("username",source)
+        args.put("skill",skill)
+        Log.e("OnReceivedSKill",args.toString())
+        UnityPlayer.UnitySendMessage("GameController","ReleaseSkill", args.toString())
+    }
+
+
 
     override fun onStop() {
         Log.e("Unity","Unity stopped")
