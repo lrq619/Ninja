@@ -58,10 +58,10 @@ class GameActivity : AppCompatActivity() {
         val username0 = responseArgs["username0"]
         val username1 = responseArgs["username1"]
         Log.e("Unity","Received GameStart, username0: "+username0+",username1: "+username1)
-//        val args = JSONObject()
-//        args.put("username0",username0)
-//        args.put("username1",username1)
-//        UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
+        val args = JSONObject()
+        args.put("username0",username0)
+        args.put("username1",username1)
+        UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
     }
 
     private fun onReceivedQuitRoom(source:String, responseArgs: JSONObject, code: Int){

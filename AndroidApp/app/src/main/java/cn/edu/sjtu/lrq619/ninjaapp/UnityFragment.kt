@@ -55,17 +55,17 @@ class UnityFragment : Fragment() {
         val args = JSONObject()
         args.put("gesture",gesture_type)
         Log.e("ReceiveBuffer",args.toString())
-//        UnityPlayer.UnitySendMessage("GameController","AddGestureBuffer", args.toString())
+        UnityPlayer.UnitySendMessage("GameController","AddGestureBuffer", args.toString())
     }
 
     fun onReceivedChangeHP(source:String, responseArgs: JSONObject, code:Int):Unit{
         val value = responseArgs["value"]
         Log.e("Unity","Received AddGestureBuffer: "+value)
 
-//        val args = JSONObject()
-//        args.put("value",value)
-//        args.put("username",source)
-//        UnityPlayer.UnitySendMessage("GameController","ChangeHP", args.toString())
+        val args = JSONObject()
+        args.put("value",value)
+        args.put("username",source)
+        UnityPlayer.UnitySendMessage("GameController","ChangeHP", args.toString())
     }
 
     fun onReceivedReleaseSkill(source:String, responseArgs: JSONObject, code:Int):Unit{
