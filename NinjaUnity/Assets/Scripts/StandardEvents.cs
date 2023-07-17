@@ -4,25 +4,51 @@ using UnityEngine;
 
 namespace StandardEvents
 {
-    public class GestureFromAndroidEvent
+    public class GameStartEvent
     {
-        public string message;
+        public string username0;
+        public string username1;
 
-        public GestureFromAndroidEvent(string message)
+        public GameStartEvent(string username0, string username1)
         {
-            this.message = message;
+            this.username0 = username0;
+            this.username1 = username1;
         }
     }
 
-    public class HPFromAndroidEvent
+    public class AddGestureBufferEvent
     {
-        public float player_0_HP;
-        public float player_1_HP;
+        public string username;
+        public string gesture;
 
-        public HPFromAndroidEvent(float player_0_HP, float player_1_HP)
+        public AddGestureBufferEvent(string username, string gesture)
         {
-            this.player_0_HP = player_0_HP;
-            this.player_1_HP = player_1_HP;
+            this.username = username;
+            this.gesture = gesture;
+        }
+    }
+
+    public class ReleaseSkillEvent
+    {
+        public string username;
+        public string skill;
+
+        public ReleaseSkillEvent(string username, string skill)
+        {
+            this.username = username;
+            this.skill = skill;
+        }
+    }
+
+    public class ChangeHPEvent
+    {
+        public string username;
+        public int value;
+
+        public ChangeHPEvent(string username, int value)
+        {
+            this.username = username;
+            this.value = value;
         }
     }
 

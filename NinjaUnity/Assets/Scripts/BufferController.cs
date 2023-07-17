@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class BufferController : MonoBehaviour
 {
+    public int playerID;
     public List<GameObject> gesturePrefabs;
     public List<GameObject> existingGestures;
     // Start is called before the first frame update
     void Start()
     {
-        EventBus.Subscribe<StandardEvents.GestureFromAndroidEvent>(EnqueueGesture);
+        EventBus.Subscribe<StandardEvents.AddGestureBufferEvent>(EnqueueGesture);
     }
 
     // Update is called once per frame
@@ -18,15 +19,18 @@ public class BufferController : MonoBehaviour
         
     }
 
-    void EnqueueGesture(StandardEvents.GestureFromAndroidEvent e)
+    void EnqueueGesture(StandardEvents.AddGestureBufferEvent e)
     {
+        if (e.username != GameController.username[playerID])
+            return;
+
         GameObject newGestureIcon = null;
-        if (e.message == "Thumb_Up")
+        if (e.gesture == "Thumb_Up")
         {
             newGestureIcon = Instantiate(gesturePrefabs[0], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
             
         }
-        else if (e.message == "ILoveYou")
+        else if (e.gesture == "ILoveYou")
         {
             newGestureIcon = Instantiate(gesturePrefabs[1], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
         }
@@ -40,6 +44,12 @@ public class BufferController : MonoBehaviour
                 {
                     g.transform.position += new Vector3(1f, 0f);
                 }
+            }
+            if (existingGestures.Count >= 2)
+            {
+                GameObject tmp = existingGestures[0];
+                existingGestures.Remove(existingGestures[0]);
+                Destroy(tmp);
             }
             existingGestures.Add(newGestureIcon);
         }
