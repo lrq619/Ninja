@@ -123,8 +123,9 @@ class CameraFragment : Fragment(),
     ): View {
         _fragmentCameraBinding =
             FragmentCameraBinding.inflate(inflater, container, false)
+
         wsClient.addResponseHandler("post_gesture",::onGestureReceived)
-        Log.e("OnCreateView","gesture callback bind!")
+        Log.e("Camera fragment","Create view for camera fragment")
         return fragmentCameraBinding.root
     }
 
@@ -391,17 +392,15 @@ class CameraFragment : Fragment(),
 
                     val highestCategory = gestureCategories.first()[0]
                     val gesturetype = highestCategory?.categoryName()
-                    val username = MainActivity.Data.username()
+                    val username = GameActivity.username
                     val gesture = Gesture(gesturetype, username)
 
-                    if(_lastGesture != gesturetype){
+                    if(gesturetype != "None" && _lastGesture != gesturetype){
                         Log.e(TAG, "Going to post gesture: "+gesturetype)
                         postGesture(gesture,::onGestureReceived)
                         Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
                         _lastGesture = gesturetype
 
-                        // Lechen: Pass Gesture to Unity
-//                        UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", gesturetype)
                     }
 
 

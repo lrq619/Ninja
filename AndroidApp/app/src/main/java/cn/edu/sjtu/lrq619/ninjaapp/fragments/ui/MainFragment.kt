@@ -2,6 +2,7 @@ package cn.edu.sjtu.lrq619.ninjaapp.fragments.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import cn.edu.sjtu.lrq619.ninjaapp.MainActivity
 import cn.edu.sjtu.lrq619.ninjaapp.R
 import cn.edu.sjtu.lrq619.ninjaapp.User
 import cn.edu.sjtu.lrq619.ninjaapp.WebService
+import cn.edu.sjtu.lrq619.ninjaapp.toast
 import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,6 +66,7 @@ class MainFragment : Fragment() {
         // jump to LoginActivity if not logged in; CreateRoomActivity otherwise
 
         if (isLoggedIn()){
+            WebService.createNewWebSocket()
             WebService.createRoom(user, ::onCreateRoom)
         }
         else {
@@ -77,6 +80,7 @@ class MainFragment : Fragment() {
         // jump to LoginActivity if not logged in; CreateRoomActivity otherwise
 
         if (isLoggedIn()){
+            WebService.createNewWebSocket()
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.MainFragments, JoinRoomFragment(), null)?.commit()
         }
@@ -92,7 +96,6 @@ class MainFragment : Fragment() {
             Log.e("onCreateRoomInFragment", "Success in create room!")
             val room_id = responseArgs["room_id"]
             MainActivity.Data.setRoomID(room_id as Int?)
-//            startActivity(Intent(requireContext(), CreateRoomActivity::class.java))
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.MainFragments, CreateRoomFragment(), null)?.commit()
         }else{
@@ -100,21 +103,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun onReady(source:String, responseArgs: JSONObject, code: Int) {
-        if(code == 0){
-            val owner = responseArgs["owner"]
-            val guest = responseArgs["guest"]
-            Log.e("onReadyOwner","Owner received Guest ready! guest: "+guest)
-            if(requireActivity()== null){
-                Log.e("onReady","Activity is null")
-            }else{
-                Log.e("onReady","Activity is not null")
-            }
-
-            startActivity(Intent(requireActivity().applicationContext, GameActivity::class.java))
-
-
-        }
+    private fun onCreateRoomSuccess(room_id:Int):Unit{
+        MainActivity.Data.setRoomID(room_id as Int?)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.MainFragments, CreateRoomFragment(), null)?.commit()
+    }
+    private fun onCreateRoomFail():Unit{
+        activity?.toast("Create room failed")
     }
 
     companion object {

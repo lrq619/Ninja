@@ -32,7 +32,9 @@
 
         <activity
             android:name=".GameActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":UnityKillsMe"
+        />
         <activity
             android:name=".MainActivity"
             android:exported="true">

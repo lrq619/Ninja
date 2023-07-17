@@ -1,6 +1,7 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class UnityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity
         mUnityPlayer = UnityPlayer(activity)
         val view = inflater.inflate(R.layout.fragment_unity, container, false)
         frameLayoutForUnity =
@@ -33,21 +35,40 @@ class UnityFragment : Fragment() {
         )
         mUnityPlayer!!.requestFocus()
         mUnityPlayer!!.windowFocusChanged(true)
+//        mUnityPlayer!!.resume()
+        Log.e("Unity fragment","On Create view for Unity fragment")
         return view
     }
 
+    override fun onStop() {
+        Log.e("Unity","Unity stopped")
+
+        mUnityPlayer!!.quit()
+
+        super.onStop()
+    }
+
+    override fun onStart() {
+        Log.e("Unity","Unity started")
+        super.onStart()
+        mUnityPlayer!!.resume()
+    }
     override fun onDestroy() {
+        Log.e("Unity","Unity destoyed")
         mUnityPlayer!!.quit()
         super.onDestroy()
     }
 
     override fun onPause() {
+        Log.e("Unity","Unity paused")
         super.onPause()
-        mUnityPlayer!!.pause()
+//        mUnityPlayer!!.pause()
+
     }
 
     override fun onResume() {
+        Log.e("Unity","Unity resumed")
         super.onResume()
-        mUnityPlayer!!.resume()
+//        mUnityPlayer!!.resume()
     }
 }

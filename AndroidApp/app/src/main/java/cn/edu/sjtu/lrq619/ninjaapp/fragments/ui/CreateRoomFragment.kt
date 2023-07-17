@@ -12,6 +12,8 @@ import android.widget.TextView
 import cn.edu.sjtu.lrq619.ninjaapp.GameActivity
 import cn.edu.sjtu.lrq619.ninjaapp.MainActivity
 import cn.edu.sjtu.lrq619.ninjaapp.R
+import cn.edu.sjtu.lrq619.ninjaapp.User
+import cn.edu.sjtu.lrq619.ninjaapp.WSClient
 import cn.edu.sjtu.lrq619.ninjaapp.WebService
 import org.json.JSONObject
 
@@ -61,6 +63,12 @@ class CreateRoomFragment : Fragment() {
     }
 
     private fun onClickReturn() {
+        Log.e("return","quit room: "+MainActivity.Data.roomID())
+        MainActivity.Data.roomID()?.let {
+            WebService.quitRoom(
+                User(MainActivity.Data.username()), it
+            )
+        }
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.MainFragments, MainFragment(), null)?.commit()
     }
@@ -75,8 +83,10 @@ class CreateRoomFragment : Fragment() {
             }else{
                 Log.e("onReady","Activity is not null")
             }
-
-            startActivity(Intent(activity?.applicationContext, GameActivity::class.java))
+            val intent = Intent(activity?.applicationContext, GameActivity::class.java)
+            intent.putExtra("username",MainActivity.Data.username())
+            intent.putExtra("room_id",MainActivity.Data.roomID())
+            startActivity(intent)
 
 
         }

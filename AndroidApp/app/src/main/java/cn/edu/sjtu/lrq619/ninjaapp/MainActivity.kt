@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         get_permission()
 //        Data = application as DataStore
         usernameText = findViewById(R.id.MainUsernameText)
+        WebService.initWebService(context = applicationContext)
     }
     fun get_permission(){
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -82,36 +83,17 @@ class MainActivity : AppCompatActivity() {
         // check whether the user is already logged in
         return Data.isLoggedIn()
     }
-    fun onClickCreateRoom(view: View?){
-        val user = User(username = Data.username())
-        // jump to LoginActivity if not logged in; CreateRoomActivity otherwise
-
-        if (isLoggedIn()){
-            createRoom(user, ::onCreateRoom)
-        }
-        else {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.MainFragments, LogSignInFragment(), null).commit()
-        }
-    }
-
-    private fun onCreateRoom(source:String, responseArgs:JSONObject, code: Int) {
-//        toast("Room successfully created!")
-        if(code == 0){
-            Log.e("onCreateRoomInFragment", "Success in create room!")
-            val room_id = responseArgs["room_id"]
-            Data.setRoomID(room_id as Int?)
-//            startActivity(Intent(this,CreateRoomActivity::class.java))
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.MainFragments, CreateRoomFragment(), null).commit()
-        }else{
-            Log.e("onCreateRoom","Fail in create room!")
-        }
-    }
 
     fun onClickLogout(view: View?) {
         val user = User(username = Data.username())
         logoutUser(applicationContext, user, ::logoutSuccessful, ::logoutFailed)
+    }
+
+    fun onClickGame(view: View?){
+        val intent = Intent(applicationContext, GameActivity::class.java)
+        intent.putExtra("username",MainActivity.Data.username())
+        intent.putExtra("room_id",MainActivity.Data.roomID())
+        startActivity(intent)
     }
 
     private fun logoutSuccessful() {

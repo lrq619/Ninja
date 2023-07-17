@@ -19,10 +19,14 @@ object WebService {
     private lateinit var queue: RequestQueue
     private val httpUrl = "https://47.98.59.37/"
     private val wsUrl = "ws://47.98.59.37:8765"
-    val wsClient = WSClient(URI(wsUrl))
+    var wsClient = WSClient(URI(wsUrl))
 
 
-
+    public fun initWebService(context: Context){
+        if (!this::queue.isInitialized) {
+            queue = newRequestQueue(context)
+        }
+    }
     fun RegisterUser(context: Context, user: User, Success:(String?)->Unit, Failed:()->Unit){
         TrustAllCertificates.apply()
 
@@ -102,25 +106,28 @@ object WebService {
         }
     }
 
+    fun createNewWebSocket(){
+        Log.e("create","Create a new wsClient")
+        wsClient = WSClient(URI(wsUrl))
+    }
 
 
-    fun createRoom(user: User, create_handler:(String, JSONObject,Int)->Unit) {
+
+    fun createRoom(user: User, handler:(String, JSONObject,Int)->Unit) {
         TrustAllCertificates.apply()
-
-
         val wsRequest = JSONObject()
         wsRequest.put("username", user.username)
         wsRequest.put("action", "create_room")
-        wsRequest.put("args", JSONObject())
+        val message_args = JSONObject()
+        wsRequest.put("args", message_args)
 
         connectWebSocket()
-        wsClient.addResponseHandler("create_room",create_handler)
-//        wsClient.addResponseHandler("ready", ready_handler)
+        wsClient.addResponseHandler("create_room",handler)
         wsClient.send(wsRequest.toString())
     }
 
-    fun joinRoom(user: User, id: Int, join_handler:(String, JSONObject,Int)->Unit, ready_handler:(String,JSONObject,Int)->Unit) {
-        TrustAllCertificates.apply()
+    fun joinRoom(user: User, id: Int, join_handler:(String, JSONObject,Int)->Unit) {
+//        TrustAllCertificates.apply()
         val wsRequest = JSONObject()
         wsRequest.put("username", user.username)
         wsRequest.put("action", "join_room")
@@ -130,8 +137,29 @@ object WebService {
 
         connectWebSocket()
         wsClient.addResponseHandler("join_room",join_handler)
-        wsClient.addResponseHandler("ready",ready_handler)
         wsClient.send(wsRequest.toString())
+    }
+
+    fun quitRoom(user: User, room_id: Int){
+        val wsRequest = JSONObject()
+        wsRequest.put("username",user.username)
+        wsRequest.put("action","quit_room")
+        val message_args = JSONObject()
+        message_args.put("room_id",room_id)
+        wsRequest.put("args",message_args)
+        connectWebSocket()
+        wsClient.send(wsRequest.toString())
+    }
+
+    fun startPlay(username:String, room_id: Int){
+        val wsRequest = JSONObject()
+        wsRequest.put("username",username)
+        wsRequest.put("action","start_play")
+        val message_args = JSONObject()
+        message_args.put("room_id",room_id)
+        wsRequest.put("args",message_args)
+        wsClient.send(wsRequest.toString())
+
     }
 
     fun postGesture(gesture: Gesture, handler:(String, JSONObject,Int)->Unit) {

@@ -59,6 +59,7 @@ class JoinRoomFragment : Fragment() {
         returnButton.setOnClickListener {
             onClickReturn()
         }
+        WebService.wsClient.addResponseHandler("ready", ::onReady)
 
         return view
     }
@@ -90,7 +91,6 @@ class JoinRoomFragment : Fragment() {
         WebService.joinRoom(
             user = user,
             id = id,
-            ready_handler = ::onReady,
             join_handler = ::onJoinRoom
         )
     }
@@ -98,8 +98,8 @@ class JoinRoomFragment : Fragment() {
     private fun onJoinRoom(source:String, responseArgs: JSONObject, code: Int){
         if(code == 0){
             Log.e("onJoinRoom", "Join room success!")
-//            val room_id = responseArgs["room_id"]
-
+            val room_id = responseArgs["room_id"]
+            MainActivity.Data.setRoomID(room_id as Int?)
         }else{
             Log.e("onJoinRoom","Join room failed!")
         }
@@ -110,8 +110,13 @@ class JoinRoomFragment : Fragment() {
             Log.e("ready",responseArgs.toString())
             val owner = responseArgs["owner"]
             val guest = responseArgs["guest"]
+            val room_id = responseArgs["room_id"]
             Log.e("onReadyOwner","Guest ready! owner: "+owner)
-            startActivity(Intent(activity?.applicationContext, GameActivity::class.java))
+            MainActivity.Data.setRoomID(room_id as Int?)
+            val intent = Intent(activity?.applicationContext, GameActivity::class.java)
+            intent.putExtra("username",MainActivity.Data.username())
+            intent.putExtra("room_id",MainActivity.Data.roomID())
+            startActivity(intent)
         }
     }
 
