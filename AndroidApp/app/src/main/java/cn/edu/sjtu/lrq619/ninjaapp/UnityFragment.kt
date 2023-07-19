@@ -53,6 +53,7 @@ class UnityFragment : Fragment() {
         Log.e("Unity","Received AddGestureBuffer: "+gesture_type)
 //        UnityPlayer.UnitySendMessage("GameController","GestureFromAndroid", gesture_type as String?)
         val args = JSONObject()
+        args.put("username",source)
         args.put("gesture",gesture_type)
         Log.e("ReceiveBuffer",args.toString())
         UnityPlayer.UnitySendMessage("GameController","AddGestureBuffer", args.toString())

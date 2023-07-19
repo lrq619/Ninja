@@ -61,6 +61,7 @@ class GameActivity : AppCompatActivity() {
         val args = JSONObject()
         args.put("username0",username0)
         args.put("username1",username1)
+        Thread.sleep(5000)
         UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
     }
 
