@@ -1,109 +1,112 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
-import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
+import android.graphics.Typeface
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.os.Handler
 import android.os.HandlerThread
+import android.provider.ContactsContract.Data
+import android.text.TextUtils.replace
+import android.util.TypedValue
 import android.view.Surface
 import android.view.TextureView
-import androidx.activity.result.contract.ActivityResultContracts
-import com.unity3d.player.UnityPlayer
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.createRoom
+import cn.edu.sjtu.lrq619.ninjaapp.WebService.logoutUser
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.CreateRoomFragment
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.LogSignInFragment
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.LoginFragment
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment
+import cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.SigninFragment
+import com.unity3d.player.n
+import org.json.JSONObject
+
 
 class MainActivity : AppCompatActivity() {
-    lateinit var textureView: TextureView
-    lateinit var cameraManager: CameraManager
-    lateinit var handler: Handler
-    lateinit var cameraDevice: CameraDevice
+    private lateinit var usernameText: TextView
 
 
-    fun get_permission(){
-        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            toast("Device has no camera!")
-            return
-        }else{
-            toast("Device camera is available")
-        }
-
-        val contract = ActivityResultContracts.RequestMultiplePermissions()
-        registerForActivityResult(contract) { results ->
-            results.forEach { result ->
-                if (!result.value) {
-                    toast("${result.key} access denied")
-                    finish()
-                }
-            }
-        }.launch(arrayOf(android.Manifest.permission.CAMERA,
-            android.Manifest.permission.RECORD_AUDIO))
+    companion object{
+        lateinit var Data : DataStore
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Data = application as DataStore
         setContentView(R.layout.activity_main)
         get_permission()
-        textureView = findViewById(R.id.textureView)
-        textureView.surfaceTextureListener = object:TextureView.SurfaceTextureListener{
-            override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
-                open_camera()
-            }
-
-            override fun onSurfaceTextureSizeChanged(p0: SurfaceTexture, p1: Int, p2: Int) {
-
-            }
-
-            override fun onSurfaceTextureDestroyed(p0: SurfaceTexture): Boolean {
-                return false
-            }
-
-            override fun onSurfaceTextureUpdated(p0: SurfaceTexture) {
-
-            }
+//        Data = application as DataStore
+        usernameText = findViewById(R.id.MainUsernameText)
+        WebService.initWebService(context = applicationContext)
+    }
+    fun get_permission(){
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
         }
-        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-
-        val handlerThread = HandlerThread("viedoThread")
-        handlerThread.start()
-        handler = Handler(handlerThread.looper)
-
     }
 
-    @SuppressLint("MissingPermission")
-    fun open_camera(){
-        cameraManager.openCamera(cameraManager.cameraIdList[0], object: CameraDevice.StateCallback(){
+    override fun onStart() {
+        super.onStart()
+        val sharedPreferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "")
+        Log.e("saved username","saved username is "+username)
+        if (Data.isLoggedIn()){
+            usernameText.text = getString(R.string.welcome_user_logged_in,Data.username())
+        }
+        else {
+            usernameText.text = getString(R.string.welcome_user_not_logged_in)
+        }
+    }
 
-            override fun onOpened(p0: CameraDevice) {
-                cameraDevice = p0
-                var surfaceTexture = textureView.surfaceTexture
-                var surface  = Surface(surfaceTexture)
+    private fun isLoggedIn():Boolean {
+        // check whether the user is already logged in
+        return Data.isLoggedIn()
+    }
 
-                var captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-                captureRequest.addTarget(surface)
+    fun onClickLogout(view: View?) {
+        val user = User(username = Data.username())
+        logoutUser(applicationContext, user, ::logoutSuccessful, ::logoutFailed)
+    }
 
-                cameraDevice.createCaptureSession(listOf(surface),object: CameraCaptureSession.StateCallback(){
-                    override fun onConfigured(p0: CameraCaptureSession) {
-                        p0.setRepeatingRequest(captureRequest.build(),null,null)
-                    }
+    fun onClickGame(view: View?){
+        val intent = Intent(applicationContext, GameActivity::class.java)
+        intent.putExtra("username",MainActivity.Data.username())
+        intent.putExtra("room_id",MainActivity.Data.roomID())
+        startActivity(intent)
+    }
 
-                    override fun onConfigureFailed(p0: CameraCaptureSession) {
+    private fun logoutSuccessful() {
+        toast("Log out Successful!")
+        Data.logOut()
+        usernameText.text = getString(R.string.welcome_user_not_logged_in)
+    }
 
-                    }
-                }, handler)
-            }
-
-            override fun onDisconnected(p0: CameraDevice) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onError(p0: CameraDevice, p1: Int) {
-                TODO("Not yet implemented")
-            }
-        },handler)
+    private fun logoutFailed(username: String?, code: Int) {
+        toast("$username log out failed.")
+        if (code == 400){
+            Data.logOut()
+            usernameText.text = "Please log in."
+        }
     }
 }

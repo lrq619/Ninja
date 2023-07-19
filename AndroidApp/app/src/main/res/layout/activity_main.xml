@@ -4,40 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="cn.edu.sjtu.lrq619.ninjaapp.UnityFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_unity" />
 
-    <TextureView
-        android:id="@+id/textureView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+    <Button
+        android:id="@+id/createRoomButton"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="300dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/maru_monica"
+        android:onClick="onClickCreateRoom"
+        android:text="Create Room"
+        android:textColor="@color/yellow"
+        android:textSize="36sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/joinRoomButton"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/maru_monica"
+        android:text="Join Room"
+        android:textColor="@color/yellow"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createRoomButton" />
+
+    <TextView
+        android:id="@+id/MainUsernameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/maru_monica"
+        android:text="Please log in."
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="100dp"
+        android:layout_height="32dp"
+        android:text="Log out"
+        android:textSize = "16sp"
+        android:fontFamily="@font/maru_monica"
+        android:textColor="@color/white"
+        android:onClick="onClickLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView2"
-        android:name="cn.edu.sjtu.lrq619.ninjaapp.CameraFragment"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:id="@+id/MainFragments"
+        android:name="cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment"
+        android:layout_width="0dp"
+        android:layout_height="682dp"
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/MainUsernameText" />
+
+    <Button
+        android:id="@+id/GameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickGame"
+        android:text="Game"
+        app:layout_constraintBottom_toTopOf="@+id/MainFragments"
+        app:layout_constraintStart_toEndOf="@+id/MainUsernameText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
