@@ -33,10 +33,28 @@ public class PlayerController : MonoBehaviour
 
     void ReleaseSkillOnPlayer(StandardEvents.ReleaseSkillEvent e)
     {
-        if (e.username == GameController.username[playerID])
+        if (e.username != GameController.username[playerID])
+            return;
+
+        if (e.skill == "LIGHT_ATTACK")
         {
             StartCoroutine(FireBallLaunch());
         }
+        else if (e.skill == "LIGHT_SHIELD")
+            StartCoroutine(DefendBehavior(0));
+    }
+
+    IEnumerator DefendBehavior(int typeID)
+    {
+        if (typeID == 0) // Light_Sheild
+        {
+            animator.SetBool("Defending", true);
+            GetComponent<BoxCollider2D>().offset *= -1f;
+            yield return new WaitForSeconds(GameController.lightDefendDuration);
+            GetComponent<BoxCollider2D>().offset *= -1f;
+            animator.SetBool("Defending", false);
+        }
+        yield return null;
     }
 
     IEnumerator FireBallLaunch()

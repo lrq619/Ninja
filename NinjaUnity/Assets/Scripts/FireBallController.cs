@@ -21,4 +21,5 @@ public class FireBallController : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
 }

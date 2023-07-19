@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static List<string> username = new List<string>();
+    public static float lightDefendDuration = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -13,7 +14,7 @@ public class GameController : MonoBehaviour
         {
             username.Add(null);
         }
-        StartCoroutine(debuger());
+        //StartCoroutine(debuger());
     }
 
     void GameStart(string text)
@@ -54,10 +55,22 @@ public class GameController : MonoBehaviour
         for (int i = 0; i <= 5; i++)
         {
             GameStart("{\"username0\": \"u1\", \"username1\": \"u2\"}");
-            yield return new WaitForSeconds(5f);
+
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Thumb_Up\"}");
-            ReleaseSkill("{\"username\": \"u2\", \"skill\": \"fireball\"}");
+
+            ReleaseSkill("{\"username\": \"u2\", \"skill\": \"LIGHT_ATTACK\"}");
+
+            ChangeHP("{\"username\": \"u2\", \"value\": -20}");
+
+
+            yield return new WaitForSeconds(3f);
+
+            ReleaseSkill("{\"username\": \"u1\", \"skill\": \"LIGHT_SHIELD\"}");
+
+
         }
+
+
 
     }
 
