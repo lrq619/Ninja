@@ -71,6 +71,7 @@ The result of the Mockup Usability Test result is shown in the following table:
 ## Individual Contributions
 
 - Lai Ruiqi: 
+
     **Unity geometric battleground**: I implement the websocket server for battle field
 
     **Online Room System**: I implement the websocket server for the room system, inlcuding the create,join and quit functions of the room
@@ -78,6 +79,8 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Online Battle System**: I implement the websocket server for battle system, including enable the players to release skills to fight with each other.
 
     **Real-time feedback**: I implement the websocket server so two players can exchange information and game status through the server.
+
+    **Access phone camera**: I use android native library to access the camera and transfer frames to gesture recognizer.
 
     **Recognize basic gesture**: I use mediapipe library to recognize gesture and tranfer them to backend server.
 - Zhang Lechen:
