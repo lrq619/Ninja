@@ -10,6 +10,7 @@ rootProject.name = "NinjaApp"
 include ':app'
 include ':unityLibrary'
 project(':unityLibrary').projectDir=new File('..\\NinjaUnity\\androidBuild\\unityLibrary')
+include ':models'
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
