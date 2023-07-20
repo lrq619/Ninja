@@ -85,6 +85,14 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Recognize basic gesture**: I use mediapipe library to recognize gesture and tranfer them to backend server.
 - Zhang Lechen:
 - Yi Shanglin:
+
+**Main Page Login System**: implemented a system that allows the user to sign in and log in.
+
+**Main Page Room System**: implemented a system that allows the user to prompt for creating or joining a room.
+
+**Main Page UI**: implemented a pixel-art styled main page with background, game logo and buttons.
+
+**Background Music**: added background music to both the main page and game scene.
 - Li Zekai:
 - Chen Yifan:
 - Chen Xuzhong:
