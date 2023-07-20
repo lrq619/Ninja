@@ -16,4 +16,7 @@
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
     <color name="yellow">#FFFF00</color>
+    <color name="light_yellow">#9EFFFF00</color>
+    <color name="blue">#232D60AE</color>
+    <color name="transparent">#00000000</color>
 </resources>

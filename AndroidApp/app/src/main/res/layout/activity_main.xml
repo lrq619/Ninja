@@ -4,16 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@drawable/forest_dark"
     tools:context=".MainActivity">
 
 
+    <ImageView
+        android:id="@+id/ninja_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/ninja_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/createRoomButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="300dp"
-        android:backgroundTint="@color/black"
+        android:background="@color/blue"
+        android:alpha="0.5"
         android:fontFamily="@font/maru_monica"
         android:onClick="onClickCreateRoom"
         android:text="Create Room"
@@ -27,10 +39,12 @@
 
     <Button
         android:id="@+id/joinRoomButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="48dp"
-        android:backgroundTint="@color/black"
+        android:background="@color/blue"
+        android:alpha="0.5"
         android:fontFamily="@font/maru_monica"
         android:text="Join Room"
         android:textColor="@color/yellow"
@@ -45,22 +59,30 @@
         android:id="@+id/MainUsernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/maru_monica"
         android:text="Please log in."
-        android:textSize="24sp"
         android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="100dp"
-        android:layout_height="32dp"
-        android:text="Log out"
-        android:textSize = "16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/maru_monica"
-        android:textColor="@color/white"
         android:onClick="onClickLogout"
+        android:paddingTop="0dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp"
+        android:backgroundTint="@color/transparent"
+        android:text="@string/underlined_logout"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,11 +101,13 @@
         android:id="@+id/GameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
         android:onClick="onClickGame"
         android:text="Game"
         app:layout_constraintBottom_toTopOf="@+id/MainFragments"
         app:layout_constraintStart_toEndOf="@+id/MainUsernameText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
