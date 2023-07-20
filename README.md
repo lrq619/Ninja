@@ -61,9 +61,27 @@ The result of the Mockup Usability Test result is shown in the following table:
 
 ## Team Roster:
 
-- Lai Ruiqi: Backend development
+- Lai Ruiqi: Full-stack development
 - Zhang Lechen: Unity development
 - Yi Shanglin: Frontend development
 - Li Zekai: Gesture recognition development, thesis writing
 - Chen Yifan: Speech recognition development, thesis writing
 - Chen Xuzhong: Gesture recognition development, thesis writing
+
+## Individual Contributions
+
+- Lai Ruiqi: 
+    **Unity geometric battleground**: I implement the websocket server for battle field
+
+    **Online Room System**: I implement the websocket server for the room system, inlcuding the create,join and quit functions of the room
+
+    **Online Battle System**: I implement the websocket server for battle system, including enable the players to release skills to fight with each other.
+
+    **Real-time feedback**: I implement the websocket server so two players can exchange information and game status through the server.
+
+    **Recognize basic gesture**: I use mediapipe library to recognize gesture and tranfer them to backend server.
+- Zhang Lechen:
+- Yi Shanglin:
+- Li Zekai:
+- Chen Yifan:
+- Chen Xuzhong:
