@@ -67,12 +67,12 @@ object SpeechRecogListener : RecognitionListener {
                 val words = speech.split(" ").last()
                 if (words.substring(0, 1) == "r") {
                     Log.e("result", "Release a skill!")
-//                    WebService.releaseSkill(GameActivity.username)
+                    WebService.releaseSkill(GameActivity.username)
                     isRecognizeSuccess = true
 
                 } else if (words.substring(0, 1) == "c") {
                     Log.e("result", "Cancel a skill!")
-//                    WebService.cancelSkill(GameActivity.username)
+                    WebService.cancelSkill(GameActivity.username)
                     isRecognizeSuccess = true
                 }
 

@@ -179,8 +179,9 @@ object WebService {
     fun releaseSkill(username:String){
         val wsRequest = JSONObject()
         wsRequest.put("username", username)
-        wsRequest.put("action","release_skill")
+        wsRequest.put("action","post_speech")
         val message_args = JSONObject()
+        message_args.put("speech_type","RELEASE")
         wsRequest.put("args",message_args)
         wsClient.send(wsRequest.toString())
     }
@@ -188,8 +189,9 @@ object WebService {
     fun cancelSkill(username:String){
         val wsRequest = JSONObject()
         wsRequest.put("username", username)
-        wsRequest.put("action","cancel_skill")
+        wsRequest.put("action","post_speech")
         val message_args = JSONObject()
+        message_args.put("speech_type","CANCEL")
         wsRequest.put("args",message_args)
         wsClient.send(wsRequest.toString())
     }

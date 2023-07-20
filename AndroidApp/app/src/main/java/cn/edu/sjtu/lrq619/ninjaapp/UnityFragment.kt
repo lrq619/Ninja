@@ -81,9 +81,9 @@ class UnityFragment : Fragment() {
     fun onReceivedReleaseSkill(source:String, responseArgs: JSONObject, code:Int):Unit{
         val skill = responseArgs["skill"]
         Log.e("Unity","Player: "+source+" released skill "+skill)
-        if(skill == "LIGHT_ATTACK") {
-            UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", "ILoveYou")
-        }
+//        if(skill == "LIGHT_ATTACK") {
+//            UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", "ILoveYou")
+//        }
 
         val args = JSONObject()
         args.put("username",source)
