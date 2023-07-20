@@ -389,7 +389,8 @@ class CameraFragment : Fragment(),
                     gestureRecognizerResultAdapter.updateResults(
                         gestureCategories.first()
                     )
-
+                    val landmarks = resultBundle.results.first().landmarks()
+                    Log.e("landmark",landmarks.toString())
                     val highestCategory = gestureCategories.first()[0]
                     val gesturetype = highestCategory?.categoryName()
                     val username = GameActivity.username
