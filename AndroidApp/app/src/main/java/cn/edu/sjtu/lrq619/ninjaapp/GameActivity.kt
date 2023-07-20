@@ -9,6 +9,7 @@ import android.content.res.AssetManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -39,13 +40,13 @@ import java.time.Duration
 import java.time.Instant
 
 
-class GameActivity : AppCompatActivity(),RecognitionListener {
+class GameActivity : AppCompatActivity(), RecognitionListener {
     private var speechService : SpeechService? = null
     private var voskModel : Model? = null
     private var lastRecognize : Instant? = null
     private val speechRecognizeInterval = 1000
     lateinit var recordResultTextView : TextView
-class GameActivity : AppCompatActivity() {
+
     private lateinit var mPlayer: MediaPlayer
     companion object{
         lateinit var username:String
