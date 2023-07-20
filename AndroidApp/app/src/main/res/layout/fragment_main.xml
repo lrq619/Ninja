@@ -9,7 +9,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         tools:context=".MainActivity">
 
 
@@ -17,31 +16,30 @@
             android:id="@+id/createRoomButton"
             android:layout_width="250dp"
             android:layout_height="60dp"
-            android:layout_marginTop="300dp"
-            android:backgroundTint="@color/black"
+            android:layout_marginBottom="48dp"
+            android:backgroundTint="@color/blue"
             android:fontFamily="@font/maru_monica"
             android:text="Create Room"
             android:textColor="@color/yellow"
             android:textSize="36sp"
+            app:layout_constraintBottom_toTopOf="@+id/joinRoomButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/joinRoomButton"
             android:layout_width="250dp"
             android:layout_height="60dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginBottom="200dp"
+            android:backgroundTint="@color/blue"
             android:fontFamily="@font/maru_monica"
             android:text="Join Room"
-            android:textSize="36sp"
             android:textColor="@color/yellow"
-            android:backgroundTint="@color/black"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/createRoomButton" />
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -42,7 +42,7 @@
     <string name="createRoom_Tips">"Room ID:"</string>
     <string name="createRoom_roomID">"Room ID: %1$d"</string>
     <string name="createRoom_wait">"Please wait…"</string>
-    <string name="createRoom_return">"Return to main page"</string>
+    <string name="createRoom_return">"Back to title"</string>
     <string name="joinRoom_hint">"Enter Room ID"</string>
     <string name="joinRoom_join">"Join"</string>
     <string name="joinRoom_return">"Return to main page"</string>
@@ -56,4 +56,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="underlined_logout"><u>Log out</u></string>
 </resources>

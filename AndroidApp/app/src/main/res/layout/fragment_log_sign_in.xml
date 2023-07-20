@@ -8,18 +8,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black">
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="250sp"
             android:layout_height="60sp"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="48dp"
+            android:backgroundTint="@color/blue"
             android:fontFamily="@font/maru_monica"
             android:text="Log In"
-            android:textSize="36sp"
             android:textColor="@color/yellow"
+            android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/signinButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -28,11 +28,12 @@
             android:id="@+id/signinButton"
             android:layout_width="250sp"
             android:layout_height="60sp"
-            android:layout_marginBottom="280dp"
+            android:layout_marginBottom="200dp"
+            android:backgroundTint="@color/blue"
             android:fontFamily="@font/maru_monica"
             android:text="Sign In"
-            android:textSize="36sp"
             android:textColor="@color/yellow"
+            android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"

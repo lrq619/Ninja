@@ -3,11 +3,13 @@ package cn.edu.sjtu.lrq619.ninjaapp
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -38,12 +40,14 @@ import java.time.Duration
 import java.time.Instant
 
 
-class GameActivity : AppCompatActivity(),RecognitionListener {
+class GameActivity : AppCompatActivity(), RecognitionListener {
     private var speechService : SpeechService? = null
     private var voskModel : Model? = null
     private var lastRecognize : Instant? = null
     private val speechRecognizeInterval = 1000
     lateinit var recordResultTextView : TextView
+
+    private lateinit var mPlayer: MediaPlayer
     companion object{
         lateinit var username:String
         var room_id : Int = -1
@@ -145,6 +149,10 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
         WebService.wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
         WebService.wsClient.addResponseHandler("quit_room",::onReceivedQuitRoom)
         Log.e("Game activity on create","handlers: "+WebService.wsClient.printAllHanlders())
+
+        mPlayer = MediaPlayer.create(this, R.raw.cyborg_ninja)
+        mPlayer.isLooping = true
+        mPlayer.start()
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO
             ) != PackageManager.PERMISSION_GRANTED) {
@@ -155,6 +163,12 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
 
 
 
+    override fun onStart() {
+        super.onStart()
+        if (!mPlayer.isPlaying){
+            mPlayer.start()
+        }
+    }
     override fun onStop(){
         Log.e("GameActivityStop","Game Activity stopped!")
 //        MainActivity.Data.roomID()
@@ -163,11 +177,17 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
         WebService.quitRoom(User(username), room_id)
         super.onStop()
 
+        if (mPlayer.isPlaying) {
+            mPlayer.stop()
+        }
     }
 
     override fun onDestroy() {
         Log.e("GameActivityDestory","Game Activity destoyed!")
         super.onDestroy()
+        if (mPlayer.isPlaying) {
+            mPlayer.stop()
+        }
     }
     fun onReceivedGameStart(source:String, responseArgs: JSONObject, code:Int):Unit{
         val username0 = responseArgs["username0"]
