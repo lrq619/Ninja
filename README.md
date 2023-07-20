@@ -41,6 +41,22 @@ fun applyUpdates(Updates* updates, View* view); // API used to apply updates to 
 
 ## View UI/UX
 
+The UI/UX page of our product is shown in the following figure:
+
+![](assets/Ninja.png)
+
+Our app has three systems: The login system, the room system, and the game system. For the login system,  users should log in for the game to play, then users can choose to join or start a room. After the room is created and joined by two users, the game starts for the battleground. After one user win the game, the game ends.
+
+The result of the Mockup Usability Test result is shown in the following table:
+
+|             Tasks              | Evaluation Metrics | Blue App(% success) |
+| :----------------------------: | :----------------: | :-----------------: |
+| Login Game Menu and chose mode |    <= 2 clicks     |        100%         |
+|     Waiting for game start     |     <=3 clicks     |         40%         |
+|    Chose skills for battle     |    <= 4 clicks     |        100%         |
+|     Update game settlement     |    <= 2 clicks     |         80%         |
+|      Log out to homepage       |     <= 1 click     |        100%         |
+
 
 
 ## Team Roster:
