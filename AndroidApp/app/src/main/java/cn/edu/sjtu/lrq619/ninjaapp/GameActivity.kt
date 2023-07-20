@@ -74,15 +74,12 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPartialResult(hypothesis: String?) {
         val speech : String = JSONObject(hypothesis)["partial"] as String
-//        Log.e("partial",speech)
-//
         if(speech.length > 3){
             val curTime = Instant.now()
             var isRecognizeSuccess = false
             val dura : Long = Duration.between(lastRecognize,curTime).toMillis()
 
             if(dura >= speechRecognizeInterval){
-//                Log.e("result",speech)
                 val words = speech.split(" ").last()
                 if(words.substring(0,1) == "r"){
                     Log.e("result","Release a skill!")
@@ -107,13 +104,6 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
     }
 
     override fun onResult(hypothesis: String?) {
-//        val speech = JSONObject(hypothesis)["text"]
-//        if(speech == "release"){
-//            Log.e("result","Release a skill!")
-//
-//        }else if(speech == "cancel"){
-//            Log.e("result","Cancel a skill!")
-//        }
 
     }
 
@@ -144,9 +134,7 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
         Log.e("GameActivity","username: "+ username + " room_id: "+ room_id)
         WebService.connectWebSocket()
         Log.e("GameActivity","New websocket connected!")
-        WebService.startPlay(username, room_id)
 
-        WebService.wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
         WebService.wsClient.addResponseHandler("quit_room",::onReceivedQuitRoom)
         Log.e("Game activity on create","handlers: "+WebService.wsClient.printAllHanlders())
 
@@ -189,16 +177,7 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
             mPlayer.stop()
         }
     }
-    fun onReceivedGameStart(source:String, responseArgs: JSONObject, code:Int):Unit{
-        val username0 = responseArgs["username0"]
-        val username1 = responseArgs["username1"]
-        Log.e("Unity","Received GameStart, username0: "+username0+",username1: "+username1)
-        val args = JSONObject()
-        args.put("username0",username0)
-        args.put("username1",username1)
-        Thread.sleep(5000)
-        UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
-    }
+
 
     private fun onReceivedQuitRoom(source:String, responseArgs: JSONObject, code: Int){
 
