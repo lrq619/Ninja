@@ -68,24 +68,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/maru_monica"
-        android:onClick="onClickLogout"
-        android:paddingTop="0dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp"
-        android:paddingBottom="0dp"
-        android:backgroundTint="@color/transparent"
-        android:text="@string/underlined_logout"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/MainFragments"
         android:name="cn.edu.sjtu.lrq619.ninjaapp.fragments.ui.MainFragment"
@@ -108,6 +90,25 @@
         app:layout_constraintStart_toEndOf="@+id/MainUsernameText"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/volumeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintEnd_toStartOf="@+id/logoutImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/volumn_on" />
+
+    <ImageButton
+        android:id="@+id/logoutImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/exit" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

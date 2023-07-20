@@ -2,6 +2,7 @@ package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +15,7 @@ import org.json.JSONObject
 import kotlin.properties.Delegates
 
 class GameActivity : AppCompatActivity() {
-
+    private lateinit var mPlayer: MediaPlayer
     companion object{
         lateinit var username:String
         var room_id : Int = -1
@@ -38,8 +39,18 @@ class GameActivity : AppCompatActivity() {
         WebService.wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
         WebService.wsClient.addResponseHandler("quit_room",::onReceivedQuitRoom)
         Log.e("Game activity on create","handlers: "+WebService.wsClient.printAllHanlders())
+
+        mPlayer = MediaPlayer.create(this, R.raw.cyborg_ninja)
+        mPlayer.isLooping = true
+        mPlayer.start()
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!mPlayer.isPlaying){
+            mPlayer.start()
+        }
+    }
     override fun onStop(){
         Log.e("GameActivityStop","Game Activity stopped!")
 //        MainActivity.Data.roomID()
@@ -48,11 +59,17 @@ class GameActivity : AppCompatActivity() {
         WebService.quitRoom(User(username), room_id)
         super.onStop()
 
+        if (mPlayer.isPlaying) {
+            mPlayer.stop()
+        }
     }
 
     override fun onDestroy() {
         Log.e("GameActivityDestory","Game Activity destoyed!")
         super.onDestroy()
+        if (mPlayer.isPlaying) {
+            mPlayer.stop()
+        }
     }
     fun onReceivedGameStart(source:String, responseArgs: JSONObject, code:Int):Unit{
         val username0 = responseArgs["username0"]

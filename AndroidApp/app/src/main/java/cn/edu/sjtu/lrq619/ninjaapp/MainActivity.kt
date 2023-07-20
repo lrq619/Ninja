@@ -3,6 +3,7 @@ package cn.edu.sjtu.lrq619.ninjaapp
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,17 +11,22 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.logoutUser
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var usernameText: TextView
-
+    private lateinit var mPlayer:MediaPlayer
+    private lateinit var volumeButton : ImageButton
+    private lateinit var logoutImage : ImageButton
 
     companion object{
         lateinit var Data : DataStore
@@ -42,6 +48,26 @@ class MainActivity : AppCompatActivity() {
         fadeAnimation.duration = 2000
         logo.startAnimation(slideAnimation)
         //logo.startAnimation(fadeAnimation)
+        mPlayer = MediaPlayer.create(this, R.raw.lines_of_code)
+        mPlayer.isLooping = true
+        mPlayer.start()
+
+        volumeButton = findViewById(R.id.volumeButton)
+        logoutImage = findViewById(R.id.logoutImageButton)
+
+        volumeButton.setOnClickListener {
+            if(mPlayer.isPlaying) {
+                mPlayer.pause()
+                volumeButton.setImageResource(R.drawable.volumn_off)
+            }
+            else {
+                mPlayer.start()
+                volumeButton.setImageResource(R.drawable.volumn_on)
+            }
+        }
+        logoutImage.setOnClickListener {
+            onClickLogout(logoutImage)
+        }
     }
     fun get_permission(){
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -60,6 +86,20 @@ class MainActivity : AppCompatActivity() {
         else {
             usernameText.text = getString(R.string.welcome_user_not_logged_in)
         }
+        if (!mPlayer.isPlaying){
+            mPlayer.start()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mPlayer.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPlayer.stop()
+        mPlayer.release()
     }
 
     private fun isLoggedIn():Boolean {
