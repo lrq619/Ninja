@@ -52,7 +52,7 @@ The result of the Mockup Usability Test result is shown in the following table:
 |             Tasks              | Evaluation Metrics | Blue App(% success) |
 | :----------------------------: | :----------------: | :-----------------: |
 | Login Game Menu and chose mode |    <= 2 clicks     |        100%         |
-|     Waiting for game start     |     <=3 clicks     |         40%         |
+|   Waiting for the game start   |     <=3 clicks     |         40%         |
 |    Chose skills for battle     |    <= 4 clicks     |        100%         |
 |     Update game settlement     |    <= 2 clicks     |         80%         |
 |      Log out to homepage       |     <= 1 click     |        100%         |
@@ -61,9 +61,9 @@ The result of the Mockup Usability Test result is shown in the following table:
 
 ## Team Roster:
 
-- Lai Ruiqi
-- Zhang Lechen
-- Yi Shanglin
-- Li Zekai
-- Chen Yifan
-- Chen Xuzhong
+- Lai Ruiqi: Backend development
+- Zhang Lechen: Unity development
+- Yi Shanglin: Frontend development
+- Li Zekai: Gesture recognition development, thesis writing
+- Chen Yifan: Speech recognition development, thesis writing
+- Chen Xuzhong: Gesture recognition development, thesis writing
