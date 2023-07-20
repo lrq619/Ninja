@@ -74,4 +74,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.20"
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation "org.java-websocket:Java-WebSocket:1.5.1"
+    implementation group: 'com.alphacephei', name: 'vosk-android', version: '0.3.32+'
+    implementation 'net.java.dev.jna:jna:5.13.0@aar'
+
 }

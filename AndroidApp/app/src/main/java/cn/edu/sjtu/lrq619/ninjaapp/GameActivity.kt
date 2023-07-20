@@ -1,19 +1,50 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
+import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import cn.edu.sjtu.lrq619.ninjaapp.GameActivity.Companion.room_id
+import cn.edu.sjtu.lrq619.ninjaapp.GameActivity.Companion.username
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
-import kotlin.properties.Delegates
+import org.vosk.Model
+import org.vosk.Recognizer
+import org.vosk.android.RecognitionListener
+import org.vosk.android.SpeechService
+import org.vosk.android.StorageService
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.OutputStream
+import java.time.Duration
+import java.time.Instant
 
+
+class GameActivity : AppCompatActivity(),RecognitionListener {
+    private var speechService : SpeechService? = null
+    private var voskModel : Model? = null
+    private var lastRecognize : Instant? = null
+    private val speechRecognizeInterval = 1000
+    lateinit var recordResultTextView : TextView
 class GameActivity : AppCompatActivity() {
     private lateinit var mPlayer: MediaPlayer
     companion object{
@@ -22,13 +53,91 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+    private fun initModel() {
+        StorageService.unpack(this, "model-en-us", "model",
+            { model: Model ->
+                voskModel = model
+                toast("model init success!")
+            }
+        ) { exception: IOException ->
+            Log.e("error in init",
+                "Failed to unpack the model" + exception.message
+            )
+            exception.message?.let { toast(it) }
+        }
+
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onPartialResult(hypothesis: String?) {
+        val speech : String = JSONObject(hypothesis)["partial"] as String
+//        Log.e("partial",speech)
+//
+        if(speech.length > 3){
+            val curTime = Instant.now()
+            var isRecognizeSuccess = false
+            val dura : Long = Duration.between(lastRecognize,curTime).toMillis()
+
+            if(dura >= speechRecognizeInterval){
+//                Log.e("result",speech)
+                val words = speech.split(" ").last()
+                if(words.substring(0,1) == "r"){
+                    Log.e("result","Release a skill!")
+                    recordResultTextView.text = "Release a skill!"
+                    isRecognizeSuccess = true
+
+                }else if(words.substring(0,1) == "c"){
+                    Log.e("result","Cancel a skill!")
+                    recordResultTextView.text = "Cancel a skill!"
+                    isRecognizeSuccess = true
+                }
+
+                if(isRecognizeSuccess){
+//                    Log.e("partial","dura: "+dura)
+                    lastRecognize = Instant.now()
+                }
+            }
+
+
+        }
+
+    }
+
+    override fun onResult(hypothesis: String?) {
+//        val speech = JSONObject(hypothesis)["text"]
+//        if(speech == "release"){
+//            Log.e("result","Release a skill!")
+//
+//        }else if(speech == "cancel"){
+//            Log.e("result","Cancel a skill!")
+//        }
+
+    }
+
+    override fun onFinalResult(hypothesis: String?) {
+
+    }
+
+    override fun onError(exception: Exception?) {
+        Log.e("vosk","error: "+exception.toString())
+    }
+
+    override fun onTimeout() {
+
+    }
+
+
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-//        username = intent.extras?.get("username") as String
 
+//        username = intent.extras?.get("username") as String
+        recordResultTextView = findViewById(R.id.RecordResult)
         username = intent.getStringExtra("username") as String
         room_id = intent.getIntExtra("room_id",-1)
         Log.e("GameActivity","username: "+ username + " room_id: "+ room_id)
@@ -43,7 +152,15 @@ class GameActivity : AppCompatActivity() {
         mPlayer = MediaPlayer.create(this, R.raw.cyborg_ninja)
         mPlayer.isLooping = true
         mPlayer.start()
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
+        }
+        initModel()
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -92,5 +209,15 @@ class GameActivity : AppCompatActivity() {
 
     fun onClickBackButton(view: View) {
         startActivity(Intent(applicationContext, MainActivity::class.java))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun onClickRecordButton(view: View){
+        Log.e("record","going to init recognizer")
+        val rec : Recognizer = Recognizer(voskModel, 16000.0f)
+        Log.e("record","init recognizer")
+        speechService = SpeechService(rec, 16000.0f)
+        speechService!!.startListening(this)
+        lastRecognize = Instant.now()
     }
 }
