@@ -1,5 +1,6 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
@@ -19,9 +21,12 @@ private const val ARG_PARAM2 = "param2"
 class UnityFragment : Fragment() {
     protected var mUnityPlayer: UnityPlayer? = null
     var frameLayoutForUnity: FrameLayout? = null
+    val listener = SpeechRecogListener
+
 
     fun UnityFragment() {}
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +48,10 @@ class UnityFragment : Fragment() {
         wsClient.addResponseHandler("AddGestureBuffer",::onReceivedAddGestureBuffer)
         wsClient.addResponseHandler("ChangeHP",::onReceivedChangeHP)
         wsClient.addResponseHandler("ReleaseSkill",::onReceivedReleaseSkill)
+
+//        recognizer.initModel(requireContext())
+
+        listener.initModel(requireContext())
         return view
     }
 
@@ -93,11 +102,14 @@ class UnityFragment : Fragment() {
         super.onStop()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         Log.e("Unity","Unity started")
         super.onStart()
         mUnityPlayer!!.resume()
         WebService.startPlay(GameActivity.username, GameActivity.room_id)
+
+
 
         wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
     }
@@ -110,7 +122,6 @@ class UnityFragment : Fragment() {
     override fun onPause() {
         Log.e("Unity","Unity paused")
         super.onPause()
-//        mUnityPlayer!!.pause()
 
     }
 
@@ -127,7 +138,10 @@ class UnityFragment : Fragment() {
         val args = JSONObject()
         args.put("username0",username0)
         args.put("username1",username1)
-//        Thread.sleep(5000)
         UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
+
+        // listener should be init here, if there are any bugs
+//        listener.initModel(requireContext())
+
     }
 }

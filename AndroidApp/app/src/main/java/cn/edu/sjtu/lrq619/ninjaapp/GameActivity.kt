@@ -40,13 +40,8 @@ import java.time.Duration
 import java.time.Instant
 
 
-class GameActivity : AppCompatActivity(), RecognitionListener {
-    private var speechService : SpeechService? = null
-    private var voskModel : Model? = null
-    private var lastRecognize : Instant? = null
-    private val speechRecognizeInterval = 1000
+class GameActivity : AppCompatActivity(){
     lateinit var recordResultTextView : TextView
-
     private lateinit var mPlayer: MediaPlayer
     companion object{
         lateinit var username:String
@@ -54,70 +49,6 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
 
     }
 
-    private fun initModel() {
-        StorageService.unpack(this, "model-en-us", "model",
-            { model: Model ->
-                voskModel = model
-                toast("model init success!")
-            }
-        ) { exception: IOException ->
-            Log.e("error in init",
-                "Failed to unpack the model" + exception.message
-            )
-            exception.message?.let { toast(it) }
-        }
-
-    }
-
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onPartialResult(hypothesis: String?) {
-        val speech : String = JSONObject(hypothesis)["partial"] as String
-        if(speech.length > 3){
-            val curTime = Instant.now()
-            var isRecognizeSuccess = false
-            val dura : Long = Duration.between(lastRecognize,curTime).toMillis()
-
-            if(dura >= speechRecognizeInterval){
-                val words = speech.split(" ").last()
-                if(words.substring(0,1) == "r"){
-                    Log.e("result","Release a skill!")
-                    recordResultTextView.text = "Release a skill!"
-                    isRecognizeSuccess = true
-
-                }else if(words.substring(0,1) == "c"){
-                    Log.e("result","Cancel a skill!")
-                    recordResultTextView.text = "Cancel a skill!"
-                    isRecognizeSuccess = true
-                }
-
-                if(isRecognizeSuccess){
-//                    Log.e("partial","dura: "+dura)
-                    lastRecognize = Instant.now()
-                }
-            }
-
-
-        }
-
-    }
-
-    override fun onResult(hypothesis: String?) {
-
-    }
-
-    override fun onFinalResult(hypothesis: String?) {
-
-    }
-
-    override fun onError(exception: Exception?) {
-        Log.e("vosk","error: "+exception.toString())
-    }
-
-    override fun onTimeout() {
-
-    }
 
 
 
@@ -126,8 +57,6 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-
-//        username = intent.extras?.get("username") as String
         recordResultTextView = findViewById(R.id.RecordResult)
         username = intent.getStringExtra("username") as String
         room_id = intent.getIntExtra("room_id",-1)
@@ -146,7 +75,7 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
             ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
         }
-        initModel()
+
     }
 
 
@@ -159,9 +88,6 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
     }
     override fun onStop(){
         Log.e("GameActivityStop","Game Activity stopped!")
-//        MainActivity.Data.roomID()
-//            ?.let { WebService.quitRoom(User(MainActivity.Data.username()), it) }
-//        MainActivity.Data.setRoomID(null)
         WebService.quitRoom(User(username), room_id)
         super.onStop()
 
@@ -178,11 +104,9 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
         }
     }
 
-
     private fun onReceivedQuitRoom(source:String, responseArgs: JSONObject, code: Int){
 
         Log.e("Received Quit room","Another user quit room: "+room_id)
-//        WebService.quitRoom(User(username), Companion.room_id)
         startActivity(Intent(applicationContext,MainActivity::class.java))
 
     }
@@ -191,13 +115,5 @@ class GameActivity : AppCompatActivity(), RecognitionListener {
         startActivity(Intent(applicationContext, MainActivity::class.java))
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun onClickRecordButton(view: View){
-        Log.e("record","going to init recognizer")
-        val rec : Recognizer = Recognizer(voskModel, 16000.0f)
-        Log.e("record","init recognizer")
-        speechService = SpeechService(rec, 16000.0f)
-        speechService!!.startListening(this)
-        lastRecognize = Instant.now()
-    }
+
 }
