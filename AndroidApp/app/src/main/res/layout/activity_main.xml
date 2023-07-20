@@ -83,11 +83,11 @@
         android:id="@+id/GameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginEnd="53dp"
         android:onClick="onClickGame"
         android:text="Game"
         app:layout_constraintBottom_toTopOf="@+id/MainFragments"
-        app:layout_constraintStart_toEndOf="@+id/MainUsernameText"
+        app:layout_constraintEnd_toStartOf="@+id/volumeButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 

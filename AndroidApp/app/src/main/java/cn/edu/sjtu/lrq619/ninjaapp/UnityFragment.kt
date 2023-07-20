@@ -97,6 +97,9 @@ class UnityFragment : Fragment() {
         Log.e("Unity","Unity started")
         super.onStart()
         mUnityPlayer!!.resume()
+        WebService.startPlay(GameActivity.username, GameActivity.room_id)
+
+        wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
     }
     override fun onDestroy() {
         Log.e("Unity","Unity destoyed")
@@ -115,5 +118,16 @@ class UnityFragment : Fragment() {
         Log.e("Unity","Unity resumed")
         super.onResume()
 //        mUnityPlayer!!.resume()
+    }
+
+    fun onReceivedGameStart(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val username0 = responseArgs["username0"]
+        val username1 = responseArgs["username1"]
+        Log.e("Unity","Received GameStart, username0: "+username0+",username1: "+username1)
+        val args = JSONObject()
+        args.put("username0",username0)
+        args.put("username1",username1)
+//        Thread.sleep(5000)
+        UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
     }
 }
