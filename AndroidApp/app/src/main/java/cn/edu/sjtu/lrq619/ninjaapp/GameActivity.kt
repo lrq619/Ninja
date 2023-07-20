@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -42,6 +43,7 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
     private var voskModel : Model? = null
     private var lastRecognize : Instant? = null
     private val speechRecognizeInterval = 1000
+    lateinit var recordResultTextView : TextView
     companion object{
         lateinit var username:String
         var room_id : Int = -1
@@ -80,10 +82,12 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
                 val words = speech.split(" ").last()
                 if(words.substring(0,1) == "r"){
                     Log.e("result","Release a skill!")
+                    recordResultTextView.text = "Release a skill!"
                     isRecognizeSuccess = true
 
                 }else if(words.substring(0,1) == "c"){
                     Log.e("result","Cancel a skill!")
+                    recordResultTextView.text = "Cancel a skill!"
                     isRecognizeSuccess = true
                 }
 
@@ -130,7 +134,7 @@ class GameActivity : AppCompatActivity(),RecognitionListener {
 
 
 //        username = intent.extras?.get("username") as String
-
+        recordResultTextView = findViewById(R.id.RecordResult)
         username = intent.getStringExtra("username") as String
         room_id = intent.getIntExtra("room_id",-1)
         Log.e("GameActivity","username: "+ username + " room_id: "+ room_id)
