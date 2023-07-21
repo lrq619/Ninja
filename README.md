@@ -83,7 +83,9 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Access phone camera**: I use android native library to access the camera and transfer frames to gesture recognizer.
 
     **Recognize basic gesture**: I use mediapipe library to recognize gesture and tranfer them to backend server.
+    
 - Zhang Lechen:
+
 - Yi Shanglin:
 
     **Main Page Login System**: implemented a system that allows the user to sign in and log in.
@@ -93,6 +95,7 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Main Page UI**: implemented a pixel-art styled main page with background, game logo and buttons.
 
     **Background Music**: added background music to both the main page and game scene.
+    
 - Li Zekai:
 
     **Recognize basic gestures**: I use the python-mediapipe library to recognize basic gestures and recognize hands landmarks.
@@ -100,5 +103,13 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Customized gesture recognition**: I will use the mediapipe library in Kotlin to recognize hands landmarks for inference.
 
     **Customized gesture recognition**: I will use hands landmarks to develop further customized gesture recognition for diverse control signals.
+    
 - Chen Yifan:
+
 - Chen Xuzhong:
+
+    **Recognize basic gestures:** Implemented with mediapipe library to recognize the basic gestures, to be more specific, use the recognizeImage function.
+
+    **Streaming-based inference**: I use mediapipe API to make sure that as the game is going on, the video stream is on and the game keeps recognizing gestures made by users.
+
+    **Access Phone camera:** Make sure that our app gets permission to access the camera of the users all the time in order to make sure our streaming-based inference works well as the game is going on.
