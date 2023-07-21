@@ -16,7 +16,7 @@ public class FireBallController : MonoBehaviour
     void Update()
     {
         GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0f);
-        transform.Rotate(0f, 0f, rotation_speed);
+        transform.Rotate(0f, 0f, rotation_speed * Time.deltaTime);
 
     }
 

@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviour
     public GameObject fireBallPrefab;
     public GameObject shurikenPrefab;
     private Animator animator;
+    private GameController game;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        EventBus.Subscribe<StandardEvents.AddGestureBufferEvent>(GestureAnimation);
+        game = GameObject.Find("/GameController").GetComponent<GameController>();
+        EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(GestureAnimation);
         EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(ReleaseSkillOnPlayer);
     }
 
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    void GestureAnimation(StandardEvents.AddGestureBufferEvent e)
+    void GestureAnimation(StandardEvents.ReleaseSkillEvent e)
     {
         if(e.username == GameController.username[playerID])
         {
@@ -80,7 +82,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GameObject fireball = Instantiate(fireBallPrefab, (Vector2)transform.position + playerDir, Quaternion.identity);
         fireball.transform.localScale = new Vector3(-playerDir.x, 1f, 1f);
-        fireball.GetComponent<FireBallController>().speed = playerDir.x;
+        float aimed_speed = Mathf.Abs(game.players[0].transform.position.x - game.players[1].transform.position.x) / 3f;
+        fireball.GetComponent<FireBallController>().speed = playerDir.x * aimed_speed;
     }
 
     IEnumerator ShurikenLaunch()
@@ -91,7 +94,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GameObject shuriken = Instantiate(shurikenPrefab, (Vector2)transform.position + playerDir, Quaternion.identity);
         shuriken.transform.localScale = new Vector3(-playerDir.x, 1f, 1f);
-        shuriken.GetComponent<FireBallController>().speed = playerDir.x;
-        shuriken.GetComponent<FireBallController>().rotation_speed = 1f;
+        float aimed_speed = Mathf.Abs(game.players[0].transform.position.x - game.players[1].transform.position.x) / 3f;
+        shuriken.GetComponent<FireBallController>().speed = playerDir.x * aimed_speed;
+        shuriken.GetComponent<FireBallController>().rotation_speed = 270f;
     }
 }

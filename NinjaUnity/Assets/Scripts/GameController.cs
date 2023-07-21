@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static List<string> username = new List<string>();
+    public List<GameObject> players = new List<GameObject>();
     public static float lightDefendDuration = 2f;
     public static float heavyDefendDuration = 4f;
 
