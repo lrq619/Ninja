@@ -44,6 +44,12 @@ public class GameController : MonoBehaviour
         EventBus.Publish(obj);
     }
 
+    void ClearGestureBuffer(string text)
+    {
+        StandardEvents.ClearGestureBufferEvent obj = JsonUtility.FromJson<StandardEvents.ClearGestureBufferEvent>(text);
+        EventBus.Publish(obj);
+    }    
+
     // Update is called once per frame
     void Update()
     {
@@ -59,15 +65,21 @@ public class GameController : MonoBehaviour
 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Thumb_Up\"}");
 
+            AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Open_Palm\"}");
+
             ReleaseSkill("{\"username\": \"u2\", \"skill\": \"LIGHT_ATTACK\"}");
 
             ChangeHP("{\"username\": \"u2\", \"value\": -20}");
 
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
 
             ReleaseSkill("{\"username\": \"u1\", \"skill\": \"LIGHT_SHIELD\"}");
 
+            ClearGestureBuffer("{\"username\": \"u2\"}");
+
+
+            yield return new WaitForSeconds(2f);
 
         }
 
