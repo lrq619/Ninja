@@ -48,6 +48,7 @@ class UnityFragment : Fragment() {
         wsClient.addResponseHandler("AddGestureBuffer",::onReceivedAddGestureBuffer)
         wsClient.addResponseHandler("ChangeHP",::onReceivedChangeHP)
         wsClient.addResponseHandler("ReleaseSkill",::onReceivedReleaseSkill)
+        wsClient.addResponseHandler("ClearGestureBuffer",::onReceivedClearBuffer)
 
 //        recognizer.initModel(requireContext())
 
@@ -66,6 +67,13 @@ class UnityFragment : Fragment() {
         args.put("gesture",gesture_type)
         Log.e("ReceiveBuffer",args.toString())
         UnityPlayer.UnitySendMessage("GameController","AddGestureBuffer", args.toString())
+    }
+
+    fun onReceivedClearBuffer(source:String, responseArgs: JSONObject, code:Int):Unit{
+        Log.e("Unity","Received ClearGestureBuffer from "+source)
+        val args = JSONObject()
+        args.put("username",source)
+        UnityPlayer.UnitySendMessage("GameController","ClearGestureBuffer",args.toString())
     }
 
     fun onReceivedChangeHP(source:String, responseArgs: JSONObject, code:Int):Unit{
