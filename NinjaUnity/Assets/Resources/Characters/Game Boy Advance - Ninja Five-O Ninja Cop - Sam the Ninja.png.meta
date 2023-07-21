@@ -200,7 +200,7 @@ TextureImporter:
         width: 30
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -221,7 +221,7 @@ TextureImporter:
         width: 30
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -242,7 +242,7 @@ TextureImporter:
         width: 30
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -250,6 +250,111 @@ TextureImporter:
       bones: []
       spriteID: 20241886a41227f49827a50976383dbe
       internalID: 1310710818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: defend_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 634
+        width: 23
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2bc75d2f6e94094e94d5ddd23c5e56d
+      internalID: -1358867187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: defend_1
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 636
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03e56890ebe0af040afaf0706b94cdb9
+      internalID: -91757464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: defend_2
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 636
+        width: 28
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16a12536719d78a4195167c4030cca10
+      internalID: -824991753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: defend_3
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 636
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: accdaea7f81aeb348b8bea114067ac6f
+      internalID: -1061452647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shuriken_0
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 552
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4747c2568b9e79d408cee029a69db6f7
+      internalID: 1623106902
       vertices: []
       indices: 
       edges: []
@@ -266,11 +371,16 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Gesture_2: 1310710818
+      shuriken_0: 1623106902
+      defend_1: -91757464
       idle_0: -1792377637
       idle_1: -1032938104
+      defend_3: -1061452647
       Gesture_1: -705948311
       Gesture_0: 219651463
       idle_2: -2053861769
+      defend_0: -1358867187
+      defend_2: -824991753
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
