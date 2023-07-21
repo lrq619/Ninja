@@ -101,4 +101,7 @@ MonoBehaviour:
   gesturePrefabs:
   - {fileID: 745050872518241805, guid: c0d3d27f06bca954499f27267fcdd186, type: 3}
   - {fileID: 139666895950047729, guid: f653dce2f36a4fc4d8540262422f2572, type: 3}
+  - {fileID: 5061732717770472927, guid: a984b11485119cc45a5232fd7663df52, type: 3}
+  - {fileID: 659044037940259324, guid: 149e62193fc3bd6459a8e26651daba16, type: 3}
+  - {fileID: 5331881084742830218, guid: 101bb0db32de517439ba0160e3dd8c36, type: 3}
   existingGestures: []

@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 {
     public static List<string> username = new List<string>();
     public static float lightDefendDuration = 2f;
+    public static float heavyDefendDuration = 4f;
 
     // Start is called before the first frame update
     void Start()

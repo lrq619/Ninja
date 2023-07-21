@@ -28,30 +28,42 @@ public class BufferController : MonoBehaviour
         if (e.gesture == "Thumb_Up")
         {
             newGestureIcon = Instantiate(gesturePrefabs[0], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
-            
+
         }
         else if (e.gesture == "ILoveYou")
         {
             newGestureIcon = Instantiate(gesturePrefabs[1], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
         }
-
-
-        if(newGestureIcon != null)
+        else if (e.gesture == "Closed_Fist")
         {
-            if (existingGestures.Count > 0)
-            {
-                foreach (GameObject g in existingGestures)
-                {
-                    g.transform.position += new Vector3(1f, 0f);
-                }
-            }
-            if (existingGestures.Count >= 2)
-            {
-                GameObject tmp = existingGestures[0];
-                existingGestures.Remove(existingGestures[0]);
-                Destroy(tmp);
-            }
-            existingGestures.Add(newGestureIcon);
+            newGestureIcon = Instantiate(gesturePrefabs[2], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
         }
+        else if (e.gesture == "Open_Palm")
+        {
+            newGestureIcon = Instantiate(gesturePrefabs[3], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
+        }
+        else if (e.gesture == "Victory")
+        {
+            newGestureIcon = Instantiate(gesturePrefabs[4], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
+        }
+
+
+        if (newGestureIcon != null)
+            {
+                if (existingGestures.Count > 0)
+                {
+                    foreach (GameObject g in existingGestures)
+                    {
+                        g.transform.position += new Vector3(1f, 0f);
+                    }
+                }
+                if (existingGestures.Count >= 2)
+                {
+                    GameObject tmp = existingGestures[0];
+                    existingGestures.Remove(existingGestures[0]);
+                    Destroy(tmp);
+                }
+                existingGestures.Add(newGestureIcon);
+            }
     }
 }
