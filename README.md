@@ -86,13 +86,19 @@ The result of the Mockup Usability Test result is shown in the following table:
 - Zhang Lechen:
 - Yi Shanglin:
 
-**Main Page Login System**: implemented a system that allows the user to sign in and log in.
+    **Main Page Login System**: implemented a system that allows the user to sign in and log in.
 
-**Main Page Room System**: implemented a system that allows the user to prompt for creating or joining a room.
+    **Main Page Room System**: implemented a system that allows the user to prompt for creating or joining a room.
 
-**Main Page UI**: implemented a pixel-art styled main page with background, game logo and buttons.
+    **Main Page UI**: implemented a pixel-art styled main page with background, game logo and buttons.
 
-**Background Music**: added background music to both the main page and game scene.
+    **Background Music**: added background music to both the main page and game scene.
 - Li Zekai:
+
+    **Recognize basic gestures**: I use the python-mediapipe library to recognize basic gestures and recognize hands landmarks.
+
+    **Customized gesture recognition**: I will use the mediapipe library in Kotlin to recognize hands landmarks for inference.
+
+    **Customized gesture recognition**: I will use hands landmarks to develop further customized gesture recognition for diverse control signals.
 - Chen Yifan:
 - Chen Xuzhong:
