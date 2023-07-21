@@ -84,7 +84,17 @@ The result of the Mockup Usability Test result is shown in the following table:
 
     **Recognize basic gesture**: I use mediapipe library to recognize gesture and tranfer them to backend server.
     
-- Zhang Lechen:
+- Zhang Lechen: 
+
+    **Unity geometric battleground**: I implemented all basic 3D geometric contents and game logics in Unity
+
+    **Anime player characters**: I implemented all animations and functions in Unity, including character's animation (idle, attack, defend), player's buffer system, and the weapons (shuriken and fireball).
+
+    **Online Basic System**: I implemented the attack system with gesture buffer and corresponding skill combinations.
+
+    **Recognize basic gesture**: I helped investigate mediapipe library and explore its usage.
+
+    **Real-time feedback**: I implemented the real-time interaction API in Unity and basic Unity game logic.
 
 - Yi Shanglin:
 
@@ -105,6 +115,10 @@ The result of the Mockup Usability Test result is shown in the following table:
     **Customized gesture recognition**: I will use hands landmarks to develop further customized gesture recognition for diverse control signals.
     
 - Chen Yifan:
+
+    **Access phone microphone**: Use the native Android library to request microphone permissions and capture player's voice
+    
+    **Recognize speech**: Utilize the Vosk offline library for efficient speech recognition
 
 - Chen Xuzhong:
 
