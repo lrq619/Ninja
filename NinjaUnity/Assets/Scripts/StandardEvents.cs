@@ -40,6 +40,16 @@ namespace StandardEvents
         }
     }
 
+    public class ClearGestureBufferEvent
+    {
+        public string username;
+
+        public ClearGestureBufferEvent(string username)
+        {
+            this.username = username;
+        }
+    }
+
     public class ChangeHPEvent
     {
         public string username;

@@ -11,6 +11,7 @@ public class BufferController : MonoBehaviour
     void Start()
     {
         EventBus.Subscribe<StandardEvents.AddGestureBufferEvent>(EnqueueGesture);
+        EventBus.Subscribe<StandardEvents.ClearGestureBufferEvent>(ClearGesture);
     }
 
     // Update is called once per frame
@@ -65,5 +66,19 @@ public class BufferController : MonoBehaviour
                 }
                 existingGestures.Add(newGestureIcon);
             }
+    }
+
+    void ClearGesture(StandardEvents.ClearGestureBufferEvent e)
+    {
+        if (e.username != GameController.username[playerID])
+            return;
+
+        while (existingGestures.Count > 0)
+        {
+            GameObject tmp = existingGestures[0];
+            existingGestures.Remove(existingGestures[0]);
+            Destroy(tmp);
+        }
+
     }
 }
