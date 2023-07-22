@@ -25,47 +25,44 @@ public class BufferController : MonoBehaviour
         if (e.username != GameController.username[playerID])
             return;
 
-        GameObject newGestureIcon = null;
+        GameObject newGesturePrefab = null;
         if (e.gesture == "Thumb_Up")
-        {
-            newGestureIcon = Instantiate(gesturePrefabs[0], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
-
-        }
+            newGesturePrefab = gesturePrefabs[0];
         else if (e.gesture == "ILoveYou")
-        {
-            newGestureIcon = Instantiate(gesturePrefabs[1], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
-        }
+            newGesturePrefab = gesturePrefabs[1];
         else if (e.gesture == "Closed_Fist")
-        {
-            newGestureIcon = Instantiate(gesturePrefabs[2], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
-        }
+            newGesturePrefab = gesturePrefabs[2];
         else if (e.gesture == "Open_Palm")
-        {
-            newGestureIcon = Instantiate(gesturePrefabs[3], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
-        }
+            newGesturePrefab = gesturePrefabs[3];
         else if (e.gesture == "Victory")
+            newGesturePrefab = gesturePrefabs[4];
+
+        if (newGesturePrefab != null)
         {
-            newGestureIcon = Instantiate(gesturePrefabs[4], (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
+            StartCoroutine(_EnqueueGesture(newGesturePrefab));
+        }
+    }
+
+    IEnumerator _EnqueueGesture(GameObject newGesturePrefab)
+    {
+        for (float i = 0; i <= 1f; i += 0.1f)
+        {
+            foreach (GameObject g in existingGestures)
+                g.transform.position += new Vector3(0.1f, 0f);
+            yield return new WaitForSeconds(0.02f);
         }
 
+        GameObject newGestureIcon = Instantiate(newGesturePrefab, (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
 
-        if (newGestureIcon != null)
-            {
-                if (existingGestures.Count > 0)
-                {
-                    foreach (GameObject g in existingGestures)
-                    {
-                        g.transform.position += new Vector3(1f, 0f);
-                    }
-                }
-                if (existingGestures.Count >= 2)
-                {
-                    GameObject tmp = existingGestures[0];
-                    existingGestures.Remove(existingGestures[0]);
-                    Destroy(tmp);
-                }
-                existingGestures.Add(newGestureIcon);
-            }
+        if (existingGestures.Count >= 2)
+        {
+            GameObject tmp = existingGestures[0];
+            existingGestures.Remove(existingGestures[0]);
+            Destroy(tmp);
+        }
+
+        existingGestures.Add(newGestureIcon);
+
     }
 
     void ClearGesture(StandardEvents.ClearGestureBufferEvent e)

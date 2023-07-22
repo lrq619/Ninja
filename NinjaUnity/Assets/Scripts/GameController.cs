@@ -6,8 +6,7 @@ public class GameController : MonoBehaviour
 {
     public static List<string> username = new List<string>();
     public List<GameObject> players = new List<GameObject>();
-    public static float lightDefendDuration = 2f;
-    public static float heavyDefendDuration = 4f;
+    public GameObject arrowPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +24,7 @@ public class GameController : MonoBehaviour
         EventBus.Publish(obj);
         username[0] = obj.username0;
         username[1] = obj.username1;
+        GameObject arrow = Instantiate(arrowPrefab, players[obj.player_id].transform.position - new Vector3(0f, 1.3f, 0f), Quaternion.identity);
     }
 
     void AddGestureBuffer(string text)
@@ -62,25 +62,39 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         for (int i = 0; i <= 5; i++)
         {
-            GameStart("{\"username0\": \"u1\", \"username1\": \"u2\"}");
+            GameStart("{\"username0\": \"u1\", \"username1\": \"u2\", \"player_id\": 1, \"room_id\": 0}");
 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Thumb_Up\"}");
 
+            yield return new WaitForSeconds(0.5f);
+
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Open_Palm\"}");
+
+            yield return new WaitForSeconds(0.5f);
+
+            AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"ILoveYou\"}");
 
             ReleaseSkill("{\"username\": \"u2\", \"skill\": \"LIGHT_ATTACK\"}");
 
             ChangeHP("{\"username\": \"u2\", \"value\": -20}");
 
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
             ReleaseSkill("{\"username\": \"u1\", \"skill\": \"LIGHT_SHIELD\"}");
+
+            yield return new WaitForSeconds(1f);
+
+            ReleaseSkill("{\"username\": \"u2\", \"skill\": \"HEAVY_SHIELD\"}");
+
+            yield return new WaitForSeconds(2f);
+
+            ReleaseSkill("{\"username\": \"u2\", \"skill\": \"BACK_NORMAL\"}");
 
             ClearGestureBuffer("{\"username\": \"u2\"}");
 
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
         }
 

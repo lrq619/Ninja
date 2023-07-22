@@ -187,6 +187,7 @@ MonoBehaviour:
   players:
   - {fileID: 31525197}
   - {fileID: 1741730656}
+  arrowPrefab: {fileID: 9172487116864141090, guid: f6d801660b7df994791999474acb20e9, type: 3}
 --- !u!4 &352276159
 Transform:
   m_ObjectHideFlags: 0

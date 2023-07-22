@@ -8,11 +8,15 @@ namespace StandardEvents
     {
         public string username0;
         public string username1;
+        public int player_id;
+        public int room_id;
 
-        public GameStartEvent(string username0, string username1)
+        public GameStartEvent(string username0, string username1, int player_id, int room_id)
         {
             this.username0 = username0;
             this.username1 = username1;
+            this.player_id = player_id;
+            this.room_id = room_id;
         }
     }
 

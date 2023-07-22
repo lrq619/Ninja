@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public int playerID;
     public GameObject fireBallPrefab;
     public GameObject shurikenPrefab;
+    public GameObject shieldObj;
     private Animator animator;
     private GameController game;
     // Start is called before the first frame update
@@ -14,7 +15,6 @@ public class PlayerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         game = GameObject.Find("/GameController").GetComponent<GameController>();
-        EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(GestureAnimation);
         EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(ReleaseSkillOnPlayer);
     }
 
@@ -25,15 +25,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
-    void GestureAnimation(StandardEvents.ReleaseSkillEvent e)
-    {
-        if(e.username == GameController.username[playerID])
-        {
-            animator.SetTrigger("GestureDetected");
-        }
-    }
-
     void ReleaseSkillOnPlayer(StandardEvents.ReleaseSkillEvent e)
     {
         if (e.username != GameController.username[playerID])
@@ -41,16 +32,25 @@ public class PlayerController : MonoBehaviour
 
         if (e.skill == "LIGHT_ATTACK")
         {
+            animator.SetTrigger("GestureDetected");
             StartCoroutine(ShurikenLaunch());
         }
         else if (e.skill == "HEAVY_ATTACK")
         {
+            animator.SetTrigger("GestureDetected");
             StartCoroutine(FireBallLaunch());
         }
         else if (e.skill == "LIGHT_SHIELD")
             StartCoroutine(DefendBehavior(0));
         else if (e.skill == "HEAVY_SHIELD")
             StartCoroutine(DefendBehavior(1));
+        else if (e.skill == "BACK_NORMAL")
+        {
+            GetComponent<BoxCollider2D>().offset *= -1f;
+            animator.SetBool("Defending", false);
+            shieldObj.SetActive(false);
+        }
+
     }
 
     IEnumerator DefendBehavior(int typeID)
@@ -59,17 +59,17 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(GameController.lightDefendDuration);
-            GetComponent<BoxCollider2D>().offset *= -1f;
-            animator.SetBool("Defending", false);
+            yield return new WaitForSeconds(0.5f);
+            shieldObj.transform.localScale = new Vector3(1f, 1f, 1f);
+            shieldObj.SetActive(true);
         }
         else if (typeID == 1) // Heavy_Sheild
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(GameController.heavyDefendDuration);
-            GetComponent<BoxCollider2D>().offset *= -1f;
-            animator.SetBool("Defending", false);
+            yield return new WaitForSeconds(0.5f);
+            shieldObj.transform.localScale = new Vector3(2f, 2f, 2f);
+            shieldObj.SetActive(true);
         }
         yield return null;
     }
