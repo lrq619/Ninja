@@ -143,9 +143,19 @@ class UnityFragment : Fragment() {
         val username0 = responseArgs["username0"]
         val username1 = responseArgs["username1"]
         Log.e("Unity","Received GameStart, username0: "+username0+",username1: "+username1)
+        var player = ""
+        var enemy = ""
+        if(GameActivity.username == username0){
+            player = username0
+            enemy = username1 as String
+        }else{
+            player = username1 as String
+            enemy = username0 as String
+        }
         val args = JSONObject()
-        args.put("username0",username0)
-        args.put("username1",username1)
+        args.put("player",player)
+        args.put("enemy",enemy)
+        args.put("room_id",GameActivity.room_id)
         UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
 
         // listener should be init here, if there are any bugs
