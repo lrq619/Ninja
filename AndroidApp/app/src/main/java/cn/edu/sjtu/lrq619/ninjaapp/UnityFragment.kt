@@ -1,5 +1,6 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.graphics.Camera
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -74,6 +75,7 @@ class UnityFragment : Fragment() {
         val args = JSONObject()
         args.put("username",source)
         UnityPlayer.UnitySendMessage("GameController","ClearGestureBuffer",args.toString())
+        CameraFragment._lastGesture = null
     }
 
     fun onReceivedChangeHP(source:String, responseArgs: JSONObject, code:Int):Unit{
@@ -89,10 +91,8 @@ class UnityFragment : Fragment() {
     fun onReceivedReleaseSkill(source:String, responseArgs: JSONObject, code:Int):Unit{
         val skill = responseArgs["skill"]
         Log.e("Unity","Player: "+source+" released skill "+skill)
-//        if(skill == "LIGHT_ATTACK") {
-//            UnityPlayer.UnitySendMessage("GameController", "GestureFromAndroid", "ILoveYou")
-//        }
 
+        CameraFragment._lastGesture = null
         val args = JSONObject()
         args.put("username",source)
         args.put("skill",skill)

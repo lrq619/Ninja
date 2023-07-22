@@ -2,6 +2,7 @@ package cn.edu.sjtu.lrq619.ninjaapp
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -31,6 +33,8 @@ import cn.edu.sjtu.lrq619.ninjaapp.WebService.postGesture
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
+import java.time.Duration
+import java.time.Instant
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,10 +52,12 @@ class CameraFragment : Fragment(),
 
     companion object {
         private const val TAG = "Hand gesture recognizer"
+        var _lastGesture: String? = null
     }
-
+    private var _lastRecognizeTime : Instant? = null
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
-    private var _lastGesture: String? = null
+    private val gestureRecognizeInterval = 500
+
 
     private val fragmentCameraBinding
         get() = _fragmentCameraBinding!!
@@ -116,6 +122,7 @@ class CameraFragment : Fragment(),
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -125,6 +132,7 @@ class CameraFragment : Fragment(),
             FragmentCameraBinding.inflate(inflater, container, false)
 
         wsClient.addResponseHandler("post_gesture",::onGestureReceived)
+        _lastRecognizeTime = Instant.now()
         Log.e("Camera fragment","Create view for camera fragment")
         return fragmentCameraBinding.root
     }
@@ -378,12 +386,14 @@ class CameraFragment : Fragment(),
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResults(
         resultBundle: GestureRecognizerHelper.ResultBundle
     ) {
         activity?.runOnUiThread {
             if (_fragmentCameraBinding != null) {
                 // Show result of recognized gesture
+
                 val gestureCategories = resultBundle.results.first().gestures()
                 if (gestureCategories.isNotEmpty()) {
                     gestureRecognizerResultAdapter.updateResults(
@@ -395,11 +405,14 @@ class CameraFragment : Fragment(),
                     val username = GameActivity.username
                     val gesture = Gesture(gesturetype, username)
 
-                    if(gesturetype != "None" && _lastGesture != gesturetype){
+                    val curTime = Instant.now()
+                    val dura = Duration.between(_lastRecognizeTime, curTime).toMillis()
+                    if(gesturetype != "None" && _lastGesture != gesturetype && dura >= gestureRecognizeInterval){
                         Log.e(TAG, "Going to post gesture: "+gesturetype)
                         postGesture(gesture,::onGestureReceived)
                         Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
                         _lastGesture = gesturetype
+                        _lastRecognizeTime = Instant.now()
 
                     }
 
