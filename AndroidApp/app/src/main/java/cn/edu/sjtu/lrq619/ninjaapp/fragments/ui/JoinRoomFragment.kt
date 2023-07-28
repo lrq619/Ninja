@@ -15,7 +15,9 @@ import cn.edu.sjtu.lrq619.ninjaapp.MainActivity
 import cn.edu.sjtu.lrq619.ninjaapp.R
 import cn.edu.sjtu.lrq619.ninjaapp.User
 import cn.edu.sjtu.lrq619.ninjaapp.WebService
+import cn.edu.sjtu.lrq619.ninjaapp.toast
 import org.json.JSONObject
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,13 +88,20 @@ class JoinRoomFragment : Fragment() {
 
     private fun onClickConfirmJoinRoom() {
         val user = User(username = MainActivity.Data.username())
-        val id = roomIDInput.text.toString().toInt()
+        try{
+            val id_str = roomIDInput.text.toString()
+            val id = id_str.toInt()
+            WebService.joinRoom(
+                user = user,
+                id = id,
+                join_handler = ::onJoinRoom
+            )
+        }catch(_:Exception){
+            requireContext().toast("Please enter valid room number!")
+        }
 
-        WebService.joinRoom(
-            user = user,
-            id = id,
-            join_handler = ::onJoinRoom
-        )
+
+
     }
 
     private fun onJoinRoom(source:String, responseArgs: JSONObject, code: Int){

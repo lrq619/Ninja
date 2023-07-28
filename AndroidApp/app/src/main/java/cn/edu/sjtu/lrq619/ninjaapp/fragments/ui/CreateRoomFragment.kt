@@ -65,9 +65,11 @@ class CreateRoomFragment : Fragment() {
     private fun onClickReturn() {
         Log.e("return","quit room: "+MainActivity.Data.roomID())
         MainActivity.Data.roomID()?.let {
-            WebService.quitRoom(
-                User(MainActivity.Data.username()), it
-            )
+            if(WebService.wsClient.isOpen){
+                WebService.quitRoom(
+                    User(MainActivity.Data.username()), it
+                )
+            }
         }
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.MainFragments, MainFragment(), null)?.commit()
