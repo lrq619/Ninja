@@ -82,7 +82,6 @@ class GameActivity : AppCompatActivity(){
         }
     }
     override fun onStop(){
-        Log.e("GameActivityStop","Game Activity stopped!")
         WebService.quitRoom(User(username), room_id)
         super.onStop()
 
@@ -92,7 +91,6 @@ class GameActivity : AppCompatActivity(){
     }
 
     override fun onDestroy() {
-        Log.e("GameActivityDestory","Game Activity destoyed!")
         super.onDestroy()
         if (mPlayer.isPlaying) {
             mPlayer.stop()

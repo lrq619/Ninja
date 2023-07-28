@@ -1,5 +1,6 @@
 package cn.edu.sjtu.lrq619.ninjaapp
 
+import android.content.Intent
 import android.graphics.Camera
 import android.os.Build
 import android.os.Bundle
@@ -43,20 +44,27 @@ class UnityFragment : Fragment() {
         )
         mUnityPlayer!!.requestFocus()
         mUnityPlayer!!.windowFocusChanged(true)
-//        mUnityPlayer!!.resume()
         Log.e("Unity fragment","On Create view for Unity fragment")
 
         wsClient.addResponseHandler("AddGestureBuffer",::onReceivedAddGestureBuffer)
         wsClient.addResponseHandler("ChangeHP",::onReceivedChangeHP)
         wsClient.addResponseHandler("ReleaseSkill",::onReceivedReleaseSkill)
         wsClient.addResponseHandler("ClearGestureBuffer",::onReceivedClearBuffer)
+        wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
+        wsClient.addResponseHandler("GameOver",::onReceivedGameOver)
 
-//        recognizer.initModel(requireContext())
 
         listener.initModel(requireContext())
         return view
     }
 
+    public fun UnityrecvMessage(message:String){
+        Log.e("Unity","received message from Unity: "+message)
+        if(message == "quit_room"){
+            startActivity(Intent(requireContext(), MainActivity::class.java))
+        }
+
+    }
 
 
     fun onReceivedAddGestureBuffer(source:String, responseArgs: JSONObject, code:Int):Unit{
@@ -103,8 +111,6 @@ class UnityFragment : Fragment() {
 
 
     override fun onStop() {
-        Log.e("Unity","Unity stopped")
-
         mUnityPlayer!!.quit()
 
         super.onStop()
@@ -117,9 +123,6 @@ class UnityFragment : Fragment() {
         mUnityPlayer!!.resume()
         WebService.startPlay(GameActivity.username, GameActivity.room_id)
 
-
-
-        wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
     }
     override fun onDestroy() {
         Log.e("Unity","Unity destoyed")
@@ -156,8 +159,17 @@ class UnityFragment : Fragment() {
         args.put("room_id",GameActivity.room_id)
         UnityPlayer.UnitySendMessage("GameController","GameStart", args.toString())
 
-        // listener should be init here, if there are any bugs
-//        listener.initModel(requireContext())
+    }
+
+    fun onReceivedGameOver(source:String, responseArgs: JSONObject, code:Int):Unit{
+        val winner = responseArgs["winner"]
+        val loser = responseArgs["loser"]
+        Log.e("Unity","Received GameOver, winner: "+winner+",loser: "+loser)
+
+        val args = JSONObject()
+        args.put("winer",winner)
+        args.put("loser",loser)
+        UnityPlayer.UnitySendMessage("GameController","GameOver", args.toString())
 
     }
 }
