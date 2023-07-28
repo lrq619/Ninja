@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public int playerID;
     public GameObject fireBallPrefab;
     public GameObject shurikenPrefab;
+    public GameObject bodyExplosionPrefab;
     public GameObject shieldObj;
     private Animator animator;
     private GameController game;
@@ -16,12 +17,28 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         game = GameObject.Find("/GameController").GetComponent<GameController>();
         EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(ReleaseSkillOnPlayer);
+        EventBus.Subscribe<StandardEvents.ChangeHPEvent>(BodyExplosionAnimation);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void BodyExplosionAnimation(StandardEvents.ChangeHPEvent e)
+    {
+        if (e.username != GameController.username[playerID])
+            return;
+
+        GameObject explosion = Instantiate(bodyExplosionPrefab, transform.position, Quaternion.identity);
+        StartCoroutine(ObjectDeleteInTime(explosion, 5f));
+    }
+
+    IEnumerator ObjectDeleteInTime(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(obj);
     }
 
 

@@ -60,10 +60,9 @@ public class GameController : MonoBehaviour
     IEnumerator debuger()
     {
         yield return new WaitForSeconds(1f);
+        GameStart("{\"username0\": \"u1\", \"username1\": \"u2\", \"player_id\": 1, \"room_id\": 0}");
         for (int i = 0; i <= 5; i++)
-        {
-            GameStart("{\"username0\": \"u1\", \"username1\": \"u2\", \"player_id\": 1, \"room_id\": 0}");
-
+        { 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Thumb_Up\"}");
 
             yield return new WaitForSeconds(0.5f);
