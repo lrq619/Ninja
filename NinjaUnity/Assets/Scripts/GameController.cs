@@ -73,6 +73,8 @@ public class GameController : MonoBehaviour
 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"ILoveYou\"}");
 
+            ReleaseSkill("{\"username\": \"u1\", \"skill\": \"HEAVY_ATTACK\"}");            
+
             ReleaseSkill("{\"username\": \"u2\", \"skill\": \"LIGHT_ATTACK\"}");
 
             ChangeHP("{\"username\": \"u2\", \"value\": -20}");

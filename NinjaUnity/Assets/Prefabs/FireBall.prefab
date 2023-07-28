@@ -77,9 +77,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1808090900, guid: e1d223029145ac2429c8adaaf0f8ccea, type: 3}
+  m_Sprite: {fileID: 2025374410, guid: ec6ceb3df7bd0834e9b076438f40dc87, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.5, y: 0.51666665}
@@ -98,7 +98,7 @@ Animator:
   m_GameObject: {fileID: 2878538838496024007}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 705a23914e94e894fbb57e3f4afd9b36, type: 2}
+  m_Controller: {fileID: 9100000, guid: b7c8dc816e81aae4e9c322fa0b25e00c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -108,6 +108,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6823791362020719038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
+  rotation_speed: 0
 --- !u!50 &2157003664241563758
 Rigidbody2D:
   serializedVersion: 4
