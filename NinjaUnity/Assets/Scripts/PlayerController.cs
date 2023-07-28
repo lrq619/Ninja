@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameObject shurikenPrefab;
     public GameObject bodyExplosionPrefab;
     public GameObject shieldObj;
+    public GameObject wallObj;
     private Animator animator;
     private GameController game;
     // Start is called before the first frame update
@@ -66,6 +67,9 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().offset *= -1f;
             animator.SetBool("Defending", false);
             shieldObj.SetActive(false);
+            wallObj.GetComponent<Animator>().SetBool("Defending",false);
+            // yield return new WaitForSeconds(0.5f);
+            // wallObj.SetActive(false);
         }
 
     }
@@ -76,17 +80,27 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(0.5f);
+            // yield return new WaitForSeconds(0.5f);
             shieldObj.transform.localScale = new Vector3(1f, 1f, 1f);
             shieldObj.SetActive(true);
+            
+            // wallObj.transform.localPosition = new Vector3(1.2f,-0.6f,0f);
+            wallObj.GetComponent<Animator>().SetBool("Defending",true);
+            wallObj.SetActive(true);
+            
         }
         else if (typeID == 1) // Heavy_Sheild
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(0.5f);
+            // yield return new WaitForSeconds(0.5f);
             shieldObj.transform.localScale = new Vector3(2f, 2f, 2f);
             shieldObj.SetActive(true);
+
+            // wallObj.transform.localPosition = new Vector3(1.2f,-0.6f,0f);
+            wallObj.GetComponent<Animator>().SetBool("Defending",true);
+            wallObj.SetActive(true);
+            
         }
         yield return null;
     }

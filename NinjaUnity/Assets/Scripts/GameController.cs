@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
         {
             username.Add(null);
         }
-        // StartCoroutine(debuger());
+        StartCoroutine(debuger());
     }
 
     void GameStart(string text)
