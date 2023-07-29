@@ -44,6 +44,15 @@ namespace StandardEvents
         }
     }
 
+    public class InvokeMenuEvent
+    {
+        public string username;
+
+        public InvokeMenuEvent(string username)
+        {
+            this.username = username;
+        }
+    }
 
     public class GameOverEvent
     {

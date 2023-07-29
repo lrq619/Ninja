@@ -22,7 +22,7 @@ public class UIController : MonoBehaviour
     {
         //EventBus.Subscribe<StandardEvents.GestureFromAndroidEvent>(ChangeTestText);
         EventBus.Subscribe<StandardEvents.ChangeHPEvent>(ChangePlayerHP);
-        EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(CallMenuInGame);
+        EventBus.Subscribe<StandardEvents.InvokeMenuEvent>(CallMenuInGame);
         EventBus.Subscribe<StandardEvents.GameOverEvent>(CallGameOverMenu);
     }
 
@@ -40,16 +40,13 @@ public class UIController : MonoBehaviour
     }
     */
 
-    void CallMenuInGame(StandardEvents.ReleaseSkillEvent e)
+    void CallMenuInGame(StandardEvents.InvokeMenuEvent e)
     {
         if (e.username != GameController.username[GameController.currentPlayerID])
             return;
 
-        if (e.skill == "MENU")
-        {
-            MenuBlock.SetActive(true);
-            MenuBlock.GetComponent<MenuBlockController>().InitializeMenuInGame();
-        }
+        MenuBlock.SetActive(true);
+        MenuBlock.GetComponent<MenuBlockController>().InitializeMenuInGame();
     }
 
     void CallGameOverMenu(StandardEvents.GameOverEvent e)

@@ -53,6 +53,13 @@ public class GameController : MonoBehaviour
         EventBus.Publish(obj);
     }
 
+    void InvokeMenu(string text)
+    {
+        StandardEvents.InvokeMenuEvent obj = JsonUtility.FromJson<StandardEvents.InvokeMenuEvent>(text);
+        EventBus.Publish(obj);
+    }
+
+
     void GameOver(string text)
     {
         StandardEvents.GameOverEvent obj = JsonUtility.FromJson<StandardEvents.GameOverEvent>(text);
