@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    public GameObject MenuBlock;
     public Text testText;
     public Slider player_0_HpBar;
     public Text player_0_HpText;
@@ -21,6 +22,8 @@ public class UIController : MonoBehaviour
     {
         //EventBus.Subscribe<StandardEvents.GestureFromAndroidEvent>(ChangeTestText);
         EventBus.Subscribe<StandardEvents.ChangeHPEvent>(ChangePlayerHP);
+        EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(CallMenuInGame);
+        EventBus.Subscribe<StandardEvents.GameOverEvent>(CallGameOverMenu);
     }
 
     // Update is called once per frame
@@ -36,6 +39,28 @@ public class UIController : MonoBehaviour
         testText.text = e.message;
     }
     */
+
+    void CallMenuInGame(StandardEvents.ReleaseSkillEvent e)
+    {
+        if (e.username != GameController.username[GameController.currentPlayerID])
+            return;
+
+        if (e.skill == "MENU")
+        {
+            MenuBlock.SetActive(true);
+            MenuBlock.GetComponent<MenuBlockController>().InitializeMenuInGame();
+        }
+    }
+
+    void CallGameOverMenu(StandardEvents.GameOverEvent e)
+    {
+        MenuBlock.SetActive(true);
+
+        if (e.winner == GameController.username[GameController.currentPlayerID])
+            MenuBlock.GetComponent<MenuBlockController>().InitializeGameOverMenu("You win!");
+        else
+            MenuBlock.GetComponent<MenuBlockController>().InitializeGameOverMenu("You lose!");
+    }
 
     void ChangePlayerHP(StandardEvents.ChangeHPEvent e)
     {

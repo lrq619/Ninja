@@ -7,7 +7,11 @@ public class PlayerController : MonoBehaviour
     public int playerID;
     public GameObject fireBallPrefab;
     public GameObject shurikenPrefab;
+    public GameObject bodyExplosionPrefab;
     public GameObject shieldObj;
+    public GameObject earthWall;
+    public GameObject fireWall;
+
     private Animator animator;
     private GameController game;
     // Start is called before the first frame update
@@ -16,12 +20,28 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         game = GameObject.Find("/GameController").GetComponent<GameController>();
         EventBus.Subscribe<StandardEvents.ReleaseSkillEvent>(ReleaseSkillOnPlayer);
+        EventBus.Subscribe<StandardEvents.ChangeHPEvent>(BodyExplosionAnimation);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void BodyExplosionAnimation(StandardEvents.ChangeHPEvent e)
+    {
+        if (e.username != GameController.username[playerID])
+            return;
+
+        GameObject explosion = Instantiate(bodyExplosionPrefab, transform.position, Quaternion.identity);
+        StartCoroutine(ObjectDeleteInTime(explosion, 5f));
+    }
+
+    IEnumerator ObjectDeleteInTime(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(obj);
     }
 
 
@@ -49,6 +69,11 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().offset *= -1f;
             animator.SetBool("Defending", false);
             shieldObj.SetActive(false);
+            earthWall.GetComponent<Animator>().SetBool("Defending",false);
+            
+            fireWall.GetComponent<Animator>().SetBool("Defending",false);
+            // yield return new WaitForSeconds(0.5f);
+            // earthWall.SetActive(false);
         }
 
     }
@@ -59,17 +84,27 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(0.5f);
-            shieldObj.transform.localScale = new Vector3(1f, 1f, 1f);
-            shieldObj.SetActive(true);
+            // yield return new WaitForSeconds(0.5f);
+            // shieldObj.transform.localScale = new Vector3(1f, 1f, 1f);
+            // shieldObj.SetActive(true);
+            
+            // earthWall.transform.localPosition = new Vector3(1.2f,-0.6f,0f);
+            fireWall.GetComponent<Animator>().SetBool("Defending",true);
+            fireWall.SetActive(true);
+            
         }
         else if (typeID == 1) // Heavy_Sheild
         {
             animator.SetBool("Defending", true);
             GetComponent<BoxCollider2D>().offset *= -1f;
-            yield return new WaitForSeconds(0.5f);
-            shieldObj.transform.localScale = new Vector3(2f, 2f, 2f);
-            shieldObj.SetActive(true);
+            // yield return new WaitForSeconds(0.5f);
+            // shieldObj.transform.localScale = new Vector3(2f, 2f, 2f);
+            // shieldObj.SetActive(true);
+
+            // earthWall.transform.localPosition = new Vector3(1.2f,-0.6f,0f);
+            earthWall.GetComponent<Animator>().SetBool("Defending",true);
+            earthWall.SetActive(true);
+            
         }
         yield return null;
     }

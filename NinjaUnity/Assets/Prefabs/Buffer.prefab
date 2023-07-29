@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 8708737207459175729}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.13, y: 1.5600001, z: 0}
-  m_LocalScale: {x: 2.25, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -1072449529, guid: ad60cf8de2891c345bbb893457e6b81a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,3 +105,4 @@ MonoBehaviour:
   - {fileID: 659044037940259324, guid: 149e62193fc3bd6459a8e26651daba16, type: 3}
   - {fileID: 5331881084742830218, guid: 101bb0db32de517439ba0160e3dd8c36, type: 3}
   existingGestures: []
+  smokeExplosionPrefab: {fileID: 5689515921452603006, guid: 2414c43dbd2837d4e98d2ab5270bed73, type: 3}

@@ -123,6 +123,7 @@ MonoBehaviour:
   playerID: 0
   fireBallPrefab: {fileID: 2878538838496024007, guid: 6e510dc2c8df51d4a9a14699ce02d30a, type: 3}
   shurikenPrefab: {fileID: 2596757257317063491, guid: d5dc9671ad435d9419536be331976244, type: 3}
+  bodyExplosionPrefab: {fileID: 2748961189497550215, guid: ca337cf7d1094594c8cf616925c094da, type: 3}
   shieldObj: {fileID: 7386574361331025920}
 --- !u!61 &-3385683670431235329
 BoxCollider2D:

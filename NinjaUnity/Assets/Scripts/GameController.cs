@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static List<string> username = new List<string>();
+    public static int currentPlayerID;
     public List<GameObject> players = new List<GameObject>();
     public GameObject arrowPrefab;
 
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
         EventBus.Publish(obj);
         username[0] = obj.username0;
         username[1] = obj.username1;
+        currentPlayerID = obj.player_id;
         GameObject arrow = Instantiate(arrowPrefab, players[obj.player_id].transform.position - new Vector3(0f, 1.3f, 0f), Quaternion.identity);
     }
 
@@ -49,7 +51,13 @@ public class GameController : MonoBehaviour
     {
         StandardEvents.ClearGestureBufferEvent obj = JsonUtility.FromJson<StandardEvents.ClearGestureBufferEvent>(text);
         EventBus.Publish(obj);
-    }    
+    }
+
+    void GameOver(string text)
+    {
+        StandardEvents.GameOverEvent obj = JsonUtility.FromJson<StandardEvents.GameOverEvent>(text);
+        EventBus.Publish(obj);
+    }
 
     // Update is called once per frame
     void Update()
@@ -60,10 +68,9 @@ public class GameController : MonoBehaviour
     IEnumerator debuger()
     {
         yield return new WaitForSeconds(1f);
+        GameStart("{\"username0\": \"u1\", \"username1\": \"u2\", \"player_id\": 1, \"room_id\": 0}");
         for (int i = 0; i <= 5; i++)
-        {
-            GameStart("{\"username0\": \"u1\", \"username1\": \"u2\", \"player_id\": 1, \"room_id\": 0}");
-
+        { 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"Thumb_Up\"}");
 
             yield return new WaitForSeconds(0.5f);
@@ -73,6 +80,8 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
             AddGestureBuffer("{\"username\": \"u2\", \"gesture\": \"ILoveYou\"}");
+
+            ReleaseSkill("{\"username\": \"u1\", \"skill\": \"HEAVY_ATTACK\"}");            
 
             ReleaseSkill("{\"username\": \"u2\", \"skill\": \"LIGHT_ATTACK\"}");
 
@@ -96,10 +105,28 @@ public class GameController : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
 
+            GameOver("{\"winner\": \"u2\", \"loser\": \"u1\"}");
+
+            yield return new WaitForSeconds(1f);
+
         }
 
 
 
+    }
+
+
+
+
+    public static void CallAndroidMethod(string methodName, string str)
+    {
+        using (var clsUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            using (var objActivity = clsUnityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+            {
+                objActivity.Call(methodName, str);
+            }
+        }
     }
 
 }

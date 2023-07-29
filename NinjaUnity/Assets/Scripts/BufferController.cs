@@ -7,6 +7,7 @@ public class BufferController : MonoBehaviour
     public int playerID;
     public List<GameObject> gesturePrefabs;
     public List<GameObject> existingGestures;
+    public GameObject smokeExplosionPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +46,8 @@ public class BufferController : MonoBehaviour
 
     IEnumerator _EnqueueGesture(GameObject newGesturePrefab)
     {
+        GameObject smokeExplosion = Instantiate(smokeExplosionPrefab, (Vector2)transform.position + new Vector2(-0.5f, 0f), Quaternion.identity);
+
         for (float i = 0; i <= 1f; i += 0.1f)
         {
             foreach (GameObject g in existingGestures)
