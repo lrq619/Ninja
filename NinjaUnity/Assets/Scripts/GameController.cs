@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     public static int currentPlayerID;
     public List<GameObject> players = new List<GameObject>();
     public GameObject arrowPrefab;
+    private AndroidJavaObject activity;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class GameController : MonoBehaviour
         {
             username.Add(null);
         }
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         // StartCoroutine(debuger());
     }
 
@@ -122,7 +125,12 @@ public class GameController : MonoBehaviour
 
     }
 
-
+    public void LetGameOver()
+    {
+    #if UNITY_ANDROID
+        activity.CallStatic("UnityrecvMessage", new object[] { "quit_room" });
+    #endif
+    }
 
 
     public static void CallAndroidMethod(string methodName, string str)
