@@ -47,12 +47,13 @@ class GameActivity : AppCompatActivity(){
     companion object{
         lateinit var username:String
         var room_id : Int = -1
-
+        lateinit var mContext: Context
         @JvmStatic
         fun UnityrecvMessage(message:String){
             Log.e("Unity","received message from Unity: "+message)
             if(message == "quit_room"){
-//                startActivity(Intent(appli, MainActivity::class.java))
+                startActivity(
+                    mContext,Intent(mContext,MainActivity::class.java),null)
                 Log.e("UnityrecvMessage", "received message: "+message)
             }
 
@@ -81,6 +82,7 @@ class GameActivity : AppCompatActivity(){
         mPlayer = MediaPlayer.create(this, R.raw.cyborg_ninja)
         mPlayer.isLooping = true
         mPlayer.start()
+        mContext = this
 
     }
 
