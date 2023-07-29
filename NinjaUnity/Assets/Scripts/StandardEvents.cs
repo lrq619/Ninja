@@ -44,6 +44,18 @@ namespace StandardEvents
         }
     }
 
+
+    public class GameOverEvent
+    {
+        public string winner;
+        public string loser;
+
+        public GameOverEvent(string winner, string loser)
+        {
+            this.winner = winner;
+            this.loser = loser;
+        }
+    }
     public class ClearGestureBufferEvent
     {
         public string username;
