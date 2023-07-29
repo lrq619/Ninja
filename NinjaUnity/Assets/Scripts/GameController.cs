@@ -18,8 +18,10 @@ public class GameController : MonoBehaviour
             username.Add(null);
         }
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        // StartCoroutine(debuger());
+    #if !UNITY_EDITOR
+            activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+    #endif
+        StartCoroutine(debuger());
     }
 
     void GameStart(string text)
@@ -127,8 +129,10 @@ public class GameController : MonoBehaviour
 
     public void LetGameOver()
     {
+    #if !UNITY_EDITOR
     #if UNITY_ANDROID
-        activity.CallStatic("UnityrecvMessage", new object[] { "quit_room" });
+            activity.CallStatic("UnityrecvMessage", new object[] { "quit_room" });
+    #endif
     #endif
     }
 

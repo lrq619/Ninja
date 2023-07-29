@@ -42,8 +42,8 @@ public class MenuBlockController : MonoBehaviour
 
     public void Onclick_QuitGame()
     {
-        Debug.Log("quittingGame");
         //GameController.CallAndroidMethod("UnityrecvMessage", "quit_room");
         GameObject.Find("/GameController").GetComponent<GameController>().LetGameOver();
+        gameObject.SetActive(false);
     }
 }
