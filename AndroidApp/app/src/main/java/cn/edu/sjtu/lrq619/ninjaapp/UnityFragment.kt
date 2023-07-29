@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
@@ -21,6 +23,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class UnityFragment : Fragment() {
+
     protected var mUnityPlayer: UnityPlayer? = null
     var frameLayoutForUnity: FrameLayout? = null
     val listener = SpeechRecogListener
@@ -59,13 +62,7 @@ class UnityFragment : Fragment() {
         return view
     }
 
-    public fun UnityrecvMessage(message:String){
-        Log.e("Unity","received message from Unity: "+message)
-        if(message == "quit_room"){
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-        }
 
-    }
 
 
     fun onReceivedAddGestureBuffer(source:String, responseArgs: JSONObject, code:Int):Unit{

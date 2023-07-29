@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import cn.edu.sjtu.lrq619.ninjaapp.GameActivity.Companion.room_id
@@ -46,6 +47,16 @@ class GameActivity : AppCompatActivity(){
     companion object{
         lateinit var username:String
         var room_id : Int = -1
+
+        @JvmStatic
+        fun UnityrecvMessage(message:String){
+            Log.e("Unity","received message from Unity: "+message)
+            if(message == "quit_room"){
+//                startActivity(Intent(appli, MainActivity::class.java))
+                Log.e("UnityrecvMessage", "received message: "+message)
+            }
+
+        }
 
     }
 
