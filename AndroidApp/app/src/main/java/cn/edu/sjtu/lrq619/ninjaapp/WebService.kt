@@ -195,4 +195,14 @@ object WebService {
         wsRequest.put("args",message_args)
         wsClient.send(wsRequest.toString())
     }
+
+    fun invokeMenu(username: String){
+        val wsRequest = JSONObject()
+        wsRequest.put("username", username)
+        wsRequest.put("action","post_speech")
+        val message_args = JSONObject()
+        message_args.put("speech_type","MENU")
+        wsRequest.put("args",message_args)
+        wsClient.send(wsRequest.toString())
+    }
 }

@@ -52,6 +52,7 @@ class UnityFragment : Fragment() {
         wsClient.addResponseHandler("ClearGestureBuffer",::onReceivedClearBuffer)
         wsClient.addResponseHandler("GameStart",::onReceivedGameStart)
         wsClient.addResponseHandler("GameOver",::onReceivedGameOver)
+        wsClient.addResponseHandler("InvokeMenu",::onReceivedInvokeMenu)
 
 
         listener.initModel(requireContext())
@@ -170,6 +171,15 @@ class UnityFragment : Fragment() {
         args.put("winer",winner)
         args.put("loser",loser)
         UnityPlayer.UnitySendMessage("GameController","GameOver", args.toString())
+
+    }
+
+    fun onReceivedInvokeMenu(source:String, responseArgs: JSONObject, code:Int):Unit{
+        Log.e("Unity","Received invoke menu, player: "+source)
+
+        val args = JSONObject()
+        args.put("username",source)
+        UnityPlayer.UnitySendMessage("GameController","InvokeMenu", args.toString())
 
     }
 }

@@ -74,6 +74,10 @@ object SpeechRecogListener : RecognitionListener {
                     Log.e("result", "Cancel a skill!")
                     WebService.cancelSkill(GameActivity.username)
                     isRecognizeSuccess = true
+                } else if(words == "menu"){
+                    Log.e("result","Invoke the menu")
+                    WebService.invokeMenu(GameActivity.username)
+                    isRecognizeSuccess = true
                 }
 
                 if (isRecognizeSuccess) {
