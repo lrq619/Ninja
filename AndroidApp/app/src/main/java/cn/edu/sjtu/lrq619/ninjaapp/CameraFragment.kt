@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.camera.core.AspectRatio
@@ -57,6 +58,7 @@ class CameraFragment : Fragment(),
     private var _lastRecognizeTime : Instant? = null
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
     private val gestureRecognizeInterval = 500
+    private var gestureImage : ImageView? = null
 
 
     private val fragmentCameraBinding
@@ -133,6 +135,7 @@ class CameraFragment : Fragment(),
 
         wsClient.addResponseHandler("post_gesture",::onGestureReceived)
         _lastRecognizeTime = Instant.now()
+        gestureImage = activity?.findViewById(R.id.gesture_image)
         Log.e("Camera fragment","Create view for camera fragment")
         return fragmentCameraBinding.root
     }
@@ -407,12 +410,26 @@ class CameraFragment : Fragment(),
 
                     val curTime = Instant.now()
                     val dura = Duration.between(_lastRecognizeTime, curTime).toMillis()
+
                     if(gesturetype != "None" && _lastGesture != gesturetype && dura >= gestureRecognizeInterval){
                         Log.e(TAG, "Going to post gesture: "+gesturetype)
                         postGesture(gesture,::onGestureReceived)
                         Log.d(TAG,"gesture changed from "+_lastGesture+" to "+gesturetype)
                         _lastGesture = gesturetype
                         _lastRecognizeTime = Instant.now()
+                        if(gesturetype == "Closed_Fist"){
+                            gestureImage?.setImageResource(R.drawable.closed_fist)
+                        }else if(gesturetype == "Open_Palm"){
+                            gestureImage?.setImageResource(R.drawable.open_palm)
+                        }else if(gesturetype == "Victory"){
+                            gestureImage?.setImageResource(R.drawable.victory)
+                        }else if(gesturetype == "Thumb_Up"){
+                            gestureImage?.setImageResource(R.drawable.thumb_up)
+                        }else if(gesturetype == "ILoveYou"){
+                            gestureImage?.setImageResource(R.drawable.i_love_you)
+                        }else{
+                            gestureImage?.setImageResource(0)
+                        }
 
                     }
 

@@ -10,12 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +29,9 @@ class UnityFragment : Fragment() {
 
     protected var mUnityPlayer: UnityPlayer? = null
     var frameLayoutForUnity: FrameLayout? = null
-    val listener = SpeechRecogListener
+    val listener : SpeechRecogListener = SpeechRecogListener()
+    lateinit var speechResultText : TextView
+    lateinit var gestureImageView: ImageView
 
 
     fun UnityFragment() {}
@@ -57,8 +62,10 @@ class UnityFragment : Fragment() {
         wsClient.addResponseHandler("GameOver",::onReceivedGameOver)
         wsClient.addResponseHandler("InvokeMenu",::onReceivedInvokeMenu)
 
+        speechResultText = activity?.findViewById<TextView>(R.id.speechResultText)!!
+        gestureImageView = activity?.findViewById<ImageView>(R.id.gesture_image)!!
 
-        listener.initModel(requireContext())
+        listener.initModel(requireContext(), speechResultText)
         return view
     }
 

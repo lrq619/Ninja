@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".GameActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -25,8 +26,9 @@
         android:id="@+id/fragmentContainerView2"
         android:name="cn.edu.sjtu.lrq619.ninjaapp.CameraFragment"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="200dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,26 +43,99 @@
         android:layout_height="wrap_content"
         android:onClick="onClickBackButton"
         android:text="Back"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="264dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/fragmentContainerView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:srcCompat="@drawable/skill_map" />
+
+    <TextView
+        android:id="@+id/speechResultText"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/maru_monica"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerView2"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/gesture_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/closed_fist" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Gesture"
+        android:gravity="center"
+        android:textColor="@color/yellow"
+        android:fontFamily="@font/maru_monica"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
 
-    <Button
-        android:id="@+id/startRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:onClick="onClickRecordButton"
-        android:text="Record"
-        app:layout_constraintStart_toEndOf="@+id/button2"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Speech"
+        android:gravity="center"
+        android:textColor="@color/yellow"
+        android:fontFamily="@font/maru_monica"
+        app:layout_constraintBottom_toTopOf="@+id/speechResultText"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Skill Map"
+        android:gravity="center"
+        android:textColor="@color/yellow"
+        android:fontFamily="@font/maru_monica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
 
     <TextView
-        android:id="@+id/RecordResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/startRecord"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Speech Map"
+        android:gravity="center"
+        android:textColor="@color/yellow"
+        android:fontFamily="@font/maru_monica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:srcCompat="@drawable/speech_map" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

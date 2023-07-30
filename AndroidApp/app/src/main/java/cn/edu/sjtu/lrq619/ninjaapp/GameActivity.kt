@@ -12,6 +12,7 @@ import android.os.Environment
 
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -69,7 +70,6 @@ class GameActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        recordResultTextView = findViewById(R.id.RecordResult)
         username = intent.getStringExtra("username") as String
         room_id = intent.getIntExtra("room_id",-1)
         Log.e("GameActivity","username: "+ username + " room_id: "+ room_id)
@@ -83,6 +83,11 @@ class GameActivity : AppCompatActivity(){
         mPlayer.isLooping = true
         mPlayer.start()
         mContext = this
+        val speechResultText = findViewById<TextView>(R.id.speechResultText)
+        speechResultText.setText("--")
+
+        val gestureImage = findViewById<ImageView>(R.id.gesture_image)
+        gestureImage.setImageResource(0)
 
     }
 
