@@ -165,7 +165,7 @@ class UnityFragment : Fragment() {
         Log.e("Unity","Received GameOver, winner: "+winner+",loser: "+loser)
 
         val args = JSONObject()
-        args.put("winer",winner)
+        args.put("winner",winner)
         args.put("loser",loser)
         UnityPlayer.UnitySendMessage("GameController","GameOver", args.toString())
 

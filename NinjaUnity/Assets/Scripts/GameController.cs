@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     #if !UNITY_EDITOR
             activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
     #endif
-        StartCoroutine(debuger());
+        // StartCoroutine(debuger());
     }
 
     void GameStart(string text)
