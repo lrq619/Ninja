@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         if (e.username != GameController.username[playerID])
             return;
 
+        animator.SetTrigger("GetHit");
         GameObject explosion = Instantiate(bodyExplosionPrefab, transform.position, Quaternion.identity);
         StartCoroutine(ObjectDeleteInTime(explosion, 5f));
     }

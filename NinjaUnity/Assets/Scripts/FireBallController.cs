@@ -22,7 +22,8 @@ public class FireBallController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
+        if (!collision.gameObject.CompareTag("FlyingWeapon"))
+            Destroy(gameObject);
     }
 
 }
