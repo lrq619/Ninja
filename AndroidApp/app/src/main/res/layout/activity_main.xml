@@ -86,6 +86,7 @@
         android:layout_marginEnd="53dp"
         android:onClick="onClickGame"
         android:text="Game"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/MainFragments"
         app:layout_constraintEnd_toStartOf="@+id/volumeButton"
         app:layout_constraintTop_toTopOf="parent"

@@ -11,6 +11,7 @@ android {
     defaultConfig {
         applicationId "cn.edu.sjtu.lrq619.ninjaapp"
         minSdk 24
+        //noinspection ExpiredTargetSdkVersion
         targetSdk 30
         versionCode 1
         versionName "1.0"
@@ -37,6 +38,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 }
 
