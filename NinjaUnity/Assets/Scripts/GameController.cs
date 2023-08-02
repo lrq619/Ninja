@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
         username[0] = obj.username0;
         username[1] = obj.username1;
         currentPlayerID = obj.player_id;
-        GameObject arrow = Instantiate(arrowPrefab, players[obj.player_id].transform.position - new Vector3(0f, 1.3f, 0f), Quaternion.identity);
+        GameObject arrow = Instantiate(arrowPrefab, players[obj.player_id].transform.position - new Vector3(-0.2f, -1.7f, 0f),arrowPrefab.transform.rotation);
     }
 
     void AddGestureBuffer(string text)

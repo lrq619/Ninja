@@ -242,7 +242,7 @@ TextureImporter:
         width: 24
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -250,6 +250,27 @@ TextureImporter:
       bones: []
       spriteID: e70a20f5752540a4297fab6409432a68
       internalID: -288986189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pixel UI pack 3 all_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 289
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 796baf5247381094e85b043dcd3a867b
+      internalID: -344833435
       vertices: []
       indices: 
       edges: []
@@ -265,12 +286,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      border_purple_0: -288986189
-      border_4: -274790533
-      border_2: -1429745830
       Pixel UI pack 3 all_0: -1072449529
-      border_3: 104496074
+      Pixel UI pack 3 all_1: -344833435
       border_1: -1021860145
+      border_2: -1429745830
+      border_3: 104496074
+      border_4: -274790533
+      border_purple_0: -288986189
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
