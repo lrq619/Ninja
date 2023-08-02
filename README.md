@@ -142,6 +142,7 @@ The third challenge we encountered is the speech recognition. We've found out th
 
 ## Getting Started
 Our project use android and Unity as front-end, django and websocket as backend. Following are the instructions on how to setup these server.
+You can simply use pre-built apk in latest release, or build from source, following are the guides for building from source.
 ### Backend
 Backend codes are stored in [Ninja-backend](https://github.com/lrq619/Ninja-backend), which consists of a http server and a websocket server.
 To clone it:
