@@ -98,6 +98,7 @@ class CameraFragment : Fragment(),
                 gestureRecognizerHelper.setupGestureRecognizer()
             }
         }
+
     }
 
     override fun onPause() {

@@ -15,6 +15,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isInvisible
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
 import cn.edu.sjtu.lrq619.ninjaapp.WebService.wsClient
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
@@ -175,6 +178,8 @@ class UnityFragment : Fragment() {
         args.put("winner",winner)
         args.put("loser",loser)
         UnityPlayer.UnitySendMessage("GameController","GameOver", args.toString())
+        listener.stopListening()
+
 
     }
 

@@ -57,6 +57,10 @@ class SpeechRecogListener : RecognitionListener {
         speechService?.startListening(this)
     }
 
+    fun stopListening(){
+        speechService?.stop()
+    }
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
